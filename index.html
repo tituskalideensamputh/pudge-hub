@@ -1,11 +1,174 @@
-HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pudge.co.za | The Data-Driven Gaming Hub</title>
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --card-bg: #161925;
+            --accent-red: #ff4a4a;
+            --text-main: #f0f2f5;
+            --text-muted: #8b949e;
+            --status-green: #2ea44f;
+        }
 
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid #25293a;
+            padding: 20px;
+            text-align: center;
+        }
 
-    
-    Pudge.co.za | Coming Soon
-    
+        header h1 {
+            margin: 0;
+            color: var(--accent-red);
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
 
+        header p {
+            margin: 5px 0 0 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
-    
-Pudge.co.za Gaming Hub is Loading...
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #25293a;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .data-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .data-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #21263d;
+        }
+
+        .data-list li:last-child {
+            border-bottom: none;
+        }
+
+        .badge {
+            background: #21263d;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .badge.active {
+            color: var(--status-green);
+        }
+
+        .ai-summary {
+            background: rgba(255, 74, 74, 0.05);
+            border-left: 3px solid var(--accent-red);
+            padding: 12px;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PUDGE.CO.ZA</h1>
+        <p>Automated Multi-Game Analytics & Global Dashboard</p>
+    </header>
+
+    <div class="container">
+
+        <!-- AI Patch Notes Section -->
+        <div class="card">
+            <h2>🤖 AI Game Updates (tl;dr)</h2>
+            <div class="ai-summary">
+                <strong>Dota 2 Patch 7.36 summary:</strong> AI analyzed 12,000 words of patch notes. Biggest shifts: Pudge base armor increased, Meat Hook travel speed slightly buffed. Meta shifting toward early map aggression.
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Updated by Llama-3 AI 42 minutes ago</p>
+        </div>
+
+        <!-- Global Steam Player Counts -->
+        <div class="card">
+            <h2>📊 Trending Games (Global)</h2>
+            <ul class="data-list">
+                <li><span>Counter-Strike 2</span> <span class="badge">842K Live</span></li>
+                <li><span>Dota 2</span> <span class="badge">411K Live</span></li>
+                <li><span>PUBG: BATTLEGROUNDS</span> <span class="badge">285K Live</span></li>
+                <li><span>Apex Legends</span> <span class="badge">144K Live</span></li>
+            </ul>
+        </div>
+
+        <!-- South African Server Ping Status -->
+        <div class="card">
+            <h2>🇿🇦 SA Server Status (ZA Regions)</h2>
+            <ul class="data-list">
+                <li><span>Valorant (JHB)</span> <span class="badge active">● Operational (14ms)</span></li>
+                <li><span>Dota 2 (CPT)</span> <span class="badge active">● Operational (8ms)</span></li>
+                <li><span>Apex Legends (JHB)</span> <span class="badge active">● Operational (19ms)</span></li>
+                <li><span>Call of Duty (ZA)</span> <span class="badge active">● Operational (12ms)</span></li>
+            </ul>
+        </div>
+
+        <!-- Epic Game Deals -->
+        <div class="card">
+            <h2>🔥 Epic Gaming Deals & Freebies</h2>
+            <ul class="data-list">
+                <li><span>Epic Store: Game of the Week</span> <span class="badge" style="color: #ffd700;">FREE NOW</span></li>
+                <li><span>Steam: Cyberpunk 2077</span> <span class="badge">50% OFF</span></li>
+                <li><span>Humble Bundle: RPG Pack</span> <span class="badge">Save R340</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
+    </footer>
+
+</body>
+</html>
