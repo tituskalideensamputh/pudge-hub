@@ -156,13 +156,14 @@
 
         <!-- Epic Game Deals -->
         <div class="card">
-            <h2>🔥 Epic Gaming Deals & Freebies</h2>
-            <ul class="data-list" id="epic-deal-list">
-                <li><span>Epic Store: Game of the Week</span> <span class="badge" style="color: #ffd700;">FREE NOW</span></li>
-                <li><span>Steam: Cyberpunk 2077</span> <span class="badge">50% OFF</span></li>
-                <li><span>Humble Bundle: RPG Pack</span> <span class="badge">Save R340</span></li>
-            </ul>
-        </div>
+            <h2><!-- 🔥 Epic Gaming Deals Card -->
+<div class="card">
+    <h2>🔥 Epic Gaming Deals & Freebies</h2>
+    <ul class="data-list" id="epic-deals-list">
+        <!-- Live data will be injected here automatically -->
+        <li><span>Loading live data streams...</span></li>
+    </ul>
+</div>
 
     </div>
 
@@ -204,6 +205,40 @@
     // Fire off the automation as soon as the page loads!
     window.onload = fetchLiveDeals;
 </script>
-    
+<script>
+    // Automates fetching real-time PC gaming deals
+    async function loadLiveDeals() {
+        try {
+            // Pulls top 3 active global game deals
+            const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
+            const data = await response.json();
+            
+            const listContainer = document.getElementById('epic-deals-list');
+            if (!listContainer) return;
+
+            // Clear the static placeholders
+            listContainer.innerHTML = '';
+
+            // Map over the real-time API array and construct clean list structures
+            data.forEach(deal => {
+                const row = document.createElement('li');
+                const discount = Math.round(parseFloat(deal.savings));
+                
+                row.innerHTML = `
+                    <span>${deal.title}</span>
+                    <span class="badge" style="background: rgba(255, 215, 0, 0.1); color: #ffd700;">
+                        $${deal.salePrice} (${discount}% OFF)
+                    </span>
+                `;
+                listContainer.appendChild(row);
+            });
+        } catch (err) {
+            console.error('Data pipeline exception:', err);
+        }
+    }
+
+    // Trigger the automated pipeline the exact microsecond the document finishes rendering
+    window.addEventListener('DOMContentLoaded', loadLiveDeals);
+</script>    
 </body>
 </html>
