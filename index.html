@@ -157,7 +157,7 @@
         <!-- Epic Game Deals -->
         <div class="card">
             <h2>🔥 Epic Gaming Deals & Freebies</h2>
-            <ul class="data-list">
+            <ul class="data-list" id="epic-deal-list">
                 <li><span>Epic Store: Game of the Week</span> <span class="badge" style="color: #ffd700;">FREE NOW</span></li>
                 <li><span>Steam: Cyberpunk 2077</span> <span class="badge">50% OFF</span></li>
                 <li><span>Humble Bundle: RPG Pack</span> <span class="badge">Save R340</span></li>
@@ -169,6 +169,41 @@
     <footer>
         <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
     </footer>
+<script>
+    // This function automatically calls a free gaming deals API when someone loads pudge.co.za
+    async function fetchLiveDeals() {
+        try {
+            // Fetch top 3 active PC game deals from CheapShark's open API
+            const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
+            const deals = await response.json();
+            
+            // Find the list element in your HTML template
+            const dealsContainer = document.querySelector('#epic-deals-list');
+            if (!dealsContainer) return;
 
+            // Clear out the hardcoded placeholder text
+            dealsContainer.innerHTML = '';
+
+            // Dynamically loop through the live API data and inject it into your page
+            deals.forEach(deal => {
+                const li = document.createElement('li');
+                // Calculate the savings percentage
+                const savings = Math.round(parseFloat(deal.savings));
+                
+                li.innerHTML = `
+                    <span>${deal.title}</span> 
+                    <span class="badge" style="color: #ffd700;">$${deal.salePrice} (${savings}% OFF)</span>
+                `;
+                dealsContainer.appendChild(li);
+            });
+        } catch (error) {
+            console.error('Error fetching live gaming deals:', error);
+        }
+    }
+
+    // Fire off the automation as soon as the page loads!
+    window.onload = fetchLiveDeals;
+</script>
+    
 </body>
 </html>
