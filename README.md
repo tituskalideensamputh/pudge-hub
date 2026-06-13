@@ -1,2 +1,2 @@
 # pudge-hub
-Automated gaming hub for pudge.com
+Automated gaming hub for pudge.co.za
