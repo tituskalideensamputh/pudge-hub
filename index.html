@@ -24,7 +24,7 @@
             --text-main: #f0f2f5;
             --text-muted: #8b949e;
             --border-color: #25293a;
-            --status-green: #2ea44f;
+            --status-green: #38bdf8;
             --glow: rgba(255, 74, 74, 0.25);
         }
 
@@ -114,7 +114,7 @@
             box-shadow: 0 0 20px var(--glow);
         }
 
-        /* ================= 🚪 MINIMALIST PORTAL GATEWAY ================= */
+        /* ================= 🚪 GATEWAY PORTAL ================= */
         .gateway-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -163,7 +163,7 @@
             line-height: 1.5;
         }
 
-        /* ================= 📊 DASHBOARD CONTENT VIEWS ================= */
+        /* ================= 📊 DASHBOARD LAYOUT GRID ================= */
         .hub-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -198,6 +198,27 @@
             margin-bottom: 18px;
         }
 
+        /* Unified Scrollable Container for 10-Item Lists */
+        .card-scroll-tray {
+            max-height: 290px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .card-scroll-tray::-webkit-scrollbar, .intel-scroll-tray::-webkit-scrollbar {
+            width: 5px;
+        }
+        .card-scroll-tray::-webkit-scrollbar-track, .intel-scroll-tray::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .card-scroll-tray::-webkit-scrollbar-thumb, .intel-scroll-tray::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+        .card-scroll-tray::-webkit-scrollbar-thumb:hover, .intel-scroll-tray::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
         .data-list {
             list-style: none;
             padding: 0;
@@ -208,8 +229,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 11px 0;
             border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
         }
 
         .data-list li:last-child { border-bottom: none; }
@@ -217,15 +239,15 @@
         .badge {
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--border-color);
-            padding: 5px 10px;
+            padding: 4px 9px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
         }
 
         .badge.active {
             color: var(--status-green);
-            background: rgba(16, 185, 129, 0.05);
+            background: rgba(56, 189, 248, 0.05);
         }
 
         .search-container {
@@ -245,9 +267,7 @@
             outline: none;
         }
 
-        .search-input:focus {
-            border-color: var(--accent);
-        }
+        .search-input:focus { border-color: var(--accent); }
 
         .search-btn {
             background: var(--accent);
@@ -261,31 +281,14 @@
             box-shadow: 0 0 10px var(--glow);
         }
 
-        .search-btn:hover {
-            opacity: 0.9;
-        }
+        .search-btn:hover { opacity: 0.9; }
 
-        /* Inline Scrollable Data Tray */
         .intel-scroll-tray {
             margin-top: 15px;
             flex-grow: 1;
             overflow-y: auto;
-            max-height: 360px;
+            max-height: 380px;
             padding-right: 4px;
-        }
-
-        .intel-scroll-tray::-webkit-scrollbar {
-            width: 5px;
-        }
-        .intel-scroll-tray::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .intel-scroll-tray::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 10px;
-        }
-        .intel-scroll-tray::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
         }
 
         .news-node {
@@ -296,13 +299,8 @@
             margin-bottom: 12px;
         }
 
-        .news-node:last-child {
-            margin-bottom: 0;
-        }
-
-        .news-node h4 {
-            margin: 0 0 6px 0;
-        }
+        .news-node:last-child { margin-bottom: 0; }
+        .news-node h4 { margin: 0 0 6px 0; }
 
         .news-node h4 a {
             color: var(--text-main);
@@ -352,7 +350,6 @@
 
     <main style="margin-bottom: 40px; flex-grow: 1; display: flex; align-items: center; width: 100%;">
 
-        <!-- 🚪 ZONE 1: MINIMALIST GATEWAY VIEW -->
         <div id="gateway-view" class="gateway-container">
             <div class="portal-card gaming-gate" onclick="changeHub('gaming')">
                 <div class="portal-icon">🎮</div>
@@ -366,10 +363,8 @@
             </div>
         </div>
 
-        <!-- 🎮 ZONE 2: ACTIVE GAMING HUB -->
         <div id="gaming-front" class="hub-grid" style="display: none;">
             
-            <!-- 🔍 DIRECT INTEGRATION SEARCH CARD -->
             <div class="card" style="grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-start;">
                 <div>
                     <h2 id="search-card-headline">🤖 Game Intelligence Scan</h2>
@@ -385,23 +380,39 @@
             </div>
 
             <div class="card">
-                <h2>📊 Trending Games (Global)</h2>
-                <ul class="data-list">
-                    <li><span>Counter-Strike 2</span> <span class="badge">840K Live</span></li>
-                    <li><span>Dota 2</span> <span class="badge">411K Live</span></li>
-                    <li><span>PUBG: BATTLEGROUNDS</span> <span class="badge">284K Live</span></li>
-                    <li><span>Apex Legends</span> <span class="badge">140K Live</span></li>
-                </ul>
+                <h2>📊 Weekly Top Downloads (Steam)</h2>
+                <div class="card-scroll-tray">
+                    <ul class="data-list" id="downloads-ticker-list">
+                        <li><span>1. Counter-Strike 2</span> <span class="badge">914K Installs</span></li>
+                        <li><span>2. Dota 2</span> <span class="badge">442K Installs</span></li>
+                        <li><span>3. PUBG: BATTLEGROUNDS</span> <span class="badge">310K Installs</span></li>
+                        <li><span>4. Apex Legends</span> <span class="badge">184K Installs</span></li>
+                        <li><span>5. Helldivers 2</span> <span class="badge">125K Installs</span></li>
+                        <li><span>6. Elden Ring</span> <span class="badge">98K Installs</span></li>
+                        <li><span>7. Grand Theft Auto V</span> <span class="badge">87K Installs</span></li>
+                        <li><span>8. Baldur's Gate 3</span> <span class="badge">74K Installs</span></li>
+                        <li><span>9. Rust</span> <span class="badge">61K Installs</span></li>
+                        <li><span>10. Terraria</span> <span class="badge">49K Installs</span></li>
+                    </ul>
+                </div>
             </div>
 
             <div class="card">
-                <h2>🇿🇦 SA Server Status (ZA Regions)</h2>
-                <ul class="data-list">
-                    <li><span>Valorant (JHB)</span> <span class="badge active">● Operational (14ms)</span></li>
-                    <li><span>Dota 2 (CPT)</span> <span class="badge active">● Operational (8ms)</span></li>
-                    <li><span>Apex Legends (JHB)</span> <span class="badge active">● Operational (19ms)</span></li>
-                    <li><span>Call of Duty (ZA)</span> <span class="badge active">● Operational (12ms)</span></li>
-                </ul>
+                <h2>🔄 Top Active Game Updates</h2>
+                <div class="card-scroll-tray">
+                    <ul class="data-list">
+                        <li><span>Dota 2</span> <span class="badge active">Patch 7.36b (Today)</span></li>
+                        <li><span>Counter-Strike 2</span> <span class="badge active">Armory Build (Today)</span></li>
+                        <li><span>Helldivers 2</span> <span class="badge active">v1.001.104 (Yesterday)</span></li>
+                        <li><span>Wuthering Waves</span> <span class="badge active">Version 1.4 (Yesterday)</span></li>
+                        <li><span>Cyberpunk 2077</span> <span class="badge active">Hotfix 2.12 (2d ago)</span></li>
+                        <li><span>Baldur's Gate 3</span> <span class="badge active">Patch 7 Deployment (3d ago)</span></li>
+                        <li><span>Rust</span> <span class="badge active">World Update Vol.2 (4d ago)</span></li>
+                        <li><span>Apex Legends</span> <span class="badge active">Shockwave Season (5d ago)</span></li>
+                        <li><span>Elden Ring</span> <span class="badge active">Calibrations v1.14 (1w ago)</span></li>
+                        <li><span>No Man's Sky</span> <span class="badge active">Aquarius v5.12 (1w ago)</span></li>
+                    </ul>
+                </div>
             </div>
 
             <div class="card">
@@ -412,7 +423,6 @@
             </div>
         </div>
 
-        <!-- 🛒 ZONE 3: ACTIVE LIFESTYLE HUB -->
         <div id="lifestyle-front" class="hub-grid" style="display: none;">
             <div class="card">
                 <h2>📍 My Area & Profile Tracker</h2>
@@ -440,12 +450,11 @@
         <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
     </footer>
 
-    <!-- ================= ⚡ CORE ARCHITECTURE DATA CONTROLLERS ================= -->
     <script>
         let backgroundTickerLoop = null;
         let activeInterfaceView = "home";
 
-        // Massive Pre-Mapped AppID Database Catalog
+        // Pre-Mapped AppID Database Catalog
         const STEAM_MAPPING_MATRIX = {
             'dota': 570, 'dota 2': 570, 'counter-strike 2': 730, 'cs2': 730, 'csgo': 730,
             'pubg': 578080, 'apex': 1172470, 'apex legends': 1172470, 
@@ -456,218 +465,4 @@
             'baldur\'s gate 3': 1086940, 'bg3': 1086940, 'baldurs gate 3': 1086940,
             'witcher': 292030, 'witcher 3': 292030, 'the witcher 3': 292030,
             'skyrim': 489830, 'rdr2': 1174180, 'red dead redemption 2': 1174180,
-            'cod': 1938090, 'call of duty': 1938090, 'rust': 252490, 'rainbow six siege': 359550,
-            'destiny 2': 1085660, 'palworld': 1623730, 'lethal company': 1966720, 'terraria': 105600, 'stardew valley': 413150
-        };
-
-        function changeHub(targetMode) {
-            activeInterfaceView = targetMode;
-            const bodyNode = document.body;
-            const gatewayElement = document.getElementById('gateway-view');
-            const gamingGridElement = document.getElementById('gaming-front');
-            const lifestyleGridElement = document.getElementById('lifestyle-front');
-            const navBarElement = document.getElementById('navigation-controls');
-            const taglineElement = document.getElementById('site-tagline');
-
-            document.getElementById('nav-gaming').classList.remove('active');
-            document.getElementById('nav-lifestyle').classList.remove('active');
-            bodyNode.setAttribute('data-theme', targetMode);
-
-            if (targetMode === 'home') {
-                gatewayElement.style.display = 'grid';
-                gamingGridElement.style.display = 'none';
-                lifestyleGridElement.style.display = 'none';
-                navBarElement.style.display = 'none';
-                taglineElement.innerText = "Automated AI Companion & Global Dashboard";
-                clearInterval(backgroundTickerLoop);
-                backgroundTickerLoop = null;
-            } else {
-                gatewayElement.style.display = 'none';
-                navBarElement.style.display = 'flex';
-
-                if (targetMode === 'gaming') {
-                    gamingGridElement.style.display = 'grid';
-                    lifestyleGridElement.style.display = 'none';
-                    document.getElementById('nav-gaming').classList.add('active');
-                    taglineElement.innerText = "Real-Time Telemetry & Systems Status Matrix";
-                    loadLiveDeals();
-                    calculateLivePings();
-                    if (!backgroundTickerLoop) {
-                        backgroundTickerLoop = setInterval(simulateLivePlayers, 5000);
-                    }
-                } else if (targetMode === 'lifestyle') {
-                    gamingGridElement.style.display = 'none';
-                    lifestyleGridElement.style.display = 'grid';
-                    document.getElementById('nav-lifestyle').classList.add('active');
-                    taglineElement.innerText = "Hyper-Local Resource Indexing Tools";
-                    clearInterval(backgroundTickerLoop);
-                    backgroundTickerLoop = null;
-                }
-            }
-        }
-
-        async function loadLiveDeals() {
-            try {
-                const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
-                const data = await response.json();
-                const listContainer = document.getElementById('epic-deals-list');
-                if (!listContainer || activeInterfaceView !== 'gaming') return;
-
-                listContainer.innerHTML = '';
-                data.forEach(deal => {
-                    const row = document.createElement('li');
-                    const discount = Math.round(parseFloat(deal.savings));
-                    row.innerHTML = `
-                        <span>${deal.title}</span>
-                        <span class="badge" style="background: rgba(255, 215, 0, 0.05); color: #ffd700; border-color: rgba(255,215,0,0.15);">$${deal.salePrice} (${discount}% OFF)</span>
-                    `;
-                    listContainer.appendChild(row);
-                });
-            } catch (err) {
-                console.error('Deals pipeline error:', err);
-            }
-        }
-
-        function simulateLivePlayers() {
-            if (activeInterfaceView !== 'gaming') return;
-            const badges = document.querySelectorAll('#gaming-front .card:nth-of-type(2) .badge');
-            badges.forEach(badge => {
-                const currentCount = parseFloat(badge.innerText);
-                if (isNaN(currentCount)) return;
-                const swing = (Math.random() * 3 - 1.5);
-                badge.innerText = `${Math.max(10, currentCount + swing).toFixed(1)}K Live`;
-            });
-        }
-
-        async function calculateLivePings() {
-            if (activeInterfaceView !== 'gaming') return;
-            const pingBadges = document.querySelectorAll('#gaming-front .card:nth-of-type(3) .badge');
-            const testNode = 'https://1.1.1.1/cdn-cgi/trace';
-
-            for (let badge of pingBadges) {
-                const start = performance.now();
-                try {
-                    await fetch(testNode, { mode: 'no-cors', cache: 'no-store' });
-                    let latency = Math.round(performance.now() - start);
-                    if (badge.parentNode.innerText.includes('JHB')) latency = Math.max(12, latency - 4);
-                    if (badge.parentNode.innerText.includes('CPT')) latency = Math.max(8, latency - 8);
-                    badge.innerHTML = `● Operational (${latency}ms)`;
-                } catch (e) {
-                    badge.innerHTML = `<span style="color: #ff4a4a;">● Intermittent</span>`;
-                }
-            }
-        }
-
-        // ================= 🎯 Unified Inline Search Engine =================
-
-        function handleSearchKeyPress(event) {
-            if (event.key === 'Enter') executeGameIntelligenceScan();
-        }
-
-        async function executeGameIntelligenceScan() {
-            const inputElement = document.getElementById('game-search-input');
-            const headlineElement = document.getElementById('search-card-headline');
-            const contentArea = document.getElementById('inline-intel-results');
-            
-            const rawQuery = inputElement.value.trim().toLowerCase();
-            if (!rawQuery) return;
-
-            headlineElement.innerText = `🤖 Scanning: ${rawQuery.toUpperCase()}`;
-            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold; font-size:0.9rem;">Resolving indexes...</div>`;
-
-            let appId = null;
-            let resolvedName = rawQuery;
-
-            // 1. Core mapping validation
-            if (STEAM_MAPPING_MATRIX[rawQuery]) {
-                appId = STEAM_MAPPING_MATRIX[rawQuery];
-            } else {
-                // 2. Dynamic store catalog lookup fallback
-                try {
-                    const searchUrl = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(rawQuery)}&l=english&cc=US`;
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`;
-                    
-                    const searchResponse = await fetch(proxyUrl);
-                    if (searchResponse.ok) {
-                        const searchWrap = await searchResponse.json();
-                        const searchPayload = JSON.parse(searchWrap.contents);
-                        
-                        if (searchPayload && searchPayload.items && searchPayload.items.length > 0) {
-                            appId = searchPayload.items[0].id;
-                            resolvedName = searchPayload.items[0].name;
-                        }
-                    }
-                } catch (searchError) {
-                    console.error("Dynamic lookup pipeline crash:", searchError);
-                }
-            }
-
-            // Halt if query returns null targets
-            if (!appId) {
-                headlineElement.innerText = `🤖 Game Intelligence Scan`;
-                contentArea.innerHTML = `
-                    <div style="text-align: center; padding: 25px 10px;">
-                        <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Database Miss</h4>
-                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Could not automatically map "${rawQuery}". Verify spelling or retry standard title formats.</p>
-                    </div>`;
-                return;
-            }
-
-            headlineElement.innerText = `🤖 Logs: ${resolvedName.toUpperCase()}`;
-
-            // 3. Fetch real-time live data array feeds
-            try {
-                const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=15`)}`;
-                
-                const response = await fetch(steamEndpoint);
-                if (!response.ok) throw new Error("CORS Proxy node dropped transaction link");
-                
-                const wrap = await response.json();
-                if (!wrap || !wrap.contents) throw new Error("Received empty cluster packet headers");
-                
-                const cleanPayload = JSON.parse(wrap.contents);
-                if (!cleanPayload || !cleanPayload.appnews || !cleanPayload.appnews.newsitems) {
-                    throw new Error("Target response mapping structural mutation error");
-                }
-
-                const newsItems = cleanPayload.appnews.newsitems;
-
-                if (newsItems.length === 0) {
-                    contentArea.innerHTML = `
-                        <div style="text-align: center; padding: 25px 10px;">
-                            <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Logs Empty</h4>
-                            <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">No active development logs or patch strings discovered for this App ID.</p>
-                        </div>`;
-                    return;
-                }
-
-                contentArea.innerHTML = '';
-                newsItems.forEach(item => {
-                    const formattedDate = new Date(item.date * 1000).toLocaleDateString('en-ZA', {
-                        day: 'numeric', month: 'short', year: 'numeric'
-                    });
-
-                    const nodeElement = document.createElement('div');
-                    nodeElement.className = 'news-node';
-                    nodeElement.innerHTML = `
-                        <h4><a href="${item.url}" target="_blank">${item.title}</a></h4>
-                        <div class="news-meta">
-                            <span>📡 ${item.feedlabel || 'Developer'}</span>
-                            <span>📅 ${formattedDate}</span>
-                        </div>
-                    `;
-                    contentArea.appendChild(nodeElement);
-                });
-
-            } catch (fault) {
-                console.error('Data pipeline error:', fault);
-                contentArea.innerHTML = `
-                    <div style="text-align: center; padding: 25px 10px;">
-                        <h4 style="margin: 0 0 5px 0; color: #ff4a4a; font-size:0.95rem;">Downlink Fault</h4>
-                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Failed to sync records. Proxy server traffic limit reached; try again shortly.</p>
-                    </div>`;
-            }
-        }
-    </script>
-</body>
-</html>
+            'cod': 1938090, 'call of duty': 1938090, 'rust': 252490, 'rainbow six siege': 3595
