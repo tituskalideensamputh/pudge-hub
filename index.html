@@ -465,4 +465,197 @@
             'baldur\'s gate 3': 1086940, 'bg3': 1086940, 'baldurs gate 3': 1086940,
             'witcher': 292030, 'witcher 3': 292030, 'the witcher 3': 292030,
             'skyrim': 489830, 'rdr2': 1174180, 'red dead redemption 2': 1174180,
-            'cod': 1938090, 'call of duty': 1938090, 'rust': 252490, 'rainbow six siege': 3595
+            'cod': 1938090, 'call of duty': 1938090, 'rust': 252490, 'rainbow six siege': 359550,
+            'destiny 2': 1085660, 'palworld': 1623730, 'lethal company': 1966720, 'terraria': 105600, 'stardew valley': 413150
+        };
+
+        function changeHub(targetMode) {
+            activeInterfaceView = targetMode;
+            const bodyNode = document.body;
+            const gatewayElement = document.getElementById('gateway-view');
+            const gamingGridElement = document.getElementById('gaming-front');
+            const lifestyleGridElement = document.getElementById('lifestyle-front');
+            const navBarElement = document.getElementById('navigation-controls');
+            const taglineElement = document.getElementById('site-tagline');
+
+            document.getElementById('nav-gaming').classList.remove('active');
+            document.getElementById('nav-lifestyle').classList.remove('active');
+            bodyNode.setAttribute('data-theme', targetMode);
+
+            if (targetMode === 'home') {
+                gatewayElement.style.display = 'grid';
+                gamingGridElement.style.display = 'none';
+                lifestyleGridElement.style.display = 'none';
+                navBarElement.style.display = 'none';
+                taglineElement.innerText = "Automated AI Companion & Global Dashboard";
+                clearInterval(backgroundTickerLoop);
+                backgroundTickerLoop = null;
+            } else {
+                gatewayElement.style.display = 'none';
+                navBarElement.style.display = 'flex';
+
+                if (targetMode === 'gaming') {
+                    gamingGridElement.style.display = 'grid';
+                    lifestyleGridElement.style.display = 'none';
+                    document.getElementById('nav-gaming').classList.add('active');
+                    taglineElement.innerText = "Real-Time Telemetry & Systems Status Matrix";
+                    loadLiveDeals();
+                    if (!backgroundTickerLoop) {
+                        backgroundTickerLoop = setInterval(simulateLiveDownloads, 4000);
+                    }
+                } else if (targetMode === 'lifestyle') {
+                    gamingGridElement.style.display = 'none';
+                    lifestyleGridElement.style.display = 'grid';
+                    document.getElementById('nav-lifestyle').classList.add('active');
+                    taglineElement.innerText = "Hyper-Local Resource Indexing Tools";
+                    clearInterval(backgroundTickerLoop);
+                    backgroundTickerLoop = null;
+                }
+            }
+        }
+
+        async function loadLiveDeals() {
+            try {
+                const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
+                const data = await response.json();
+                const listContainer = document.getElementById('epic-deals-list');
+                if (!listContainer || activeInterfaceView !== 'gaming') return;
+
+                listContainer.innerHTML = '';
+                data.forEach(deal => {
+                    const row = document.createElement('li');
+                    const discount = Math.round(parseFloat(deal.savings));
+                    row.innerHTML = `
+                        <span>${deal.title}</span>
+                        <span class="badge" style="background: rgba(255, 215, 0, 0.05); color: #ffd700; border-color: rgba(255,215,0,0.15);">$${deal.salePrice} (${discount}% OFF)</span>
+                    `;
+                    listContainer.appendChild(row);
+                });
+            } catch (err) {
+                console.error('Deals pipeline link failure:', err);
+            }
+        }
+
+        function simulateLiveDownloads() {
+            if (activeInterfaceView !== 'gaming') return;
+            const badges = document.querySelectorAll('#downloads-ticker-list .badge');
+            badges.forEach(badge => {
+                const currentCount = parseFloat(badge.innerText);
+                if (isNaN(currentCount)) return;
+                const variance = (Math.random() * 2 - 1);
+                badge.innerText = `${Math.max(5, currentCount + variance).toFixed(0)}K Installs`;
+            });
+        }
+
+        // ================= 🎯 Unified Search Engine =================
+
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') executeGameIntelligenceScan();
+        }
+
+        async function executeGameIntelligenceScan() {
+            const inputElement = document.getElementById('game-search-input');
+            const headlineElement = document.getElementById('search-card-headline');
+            const contentArea = document.getElementById('inline-intel-results');
+            
+            const rawQuery = inputElement.value.trim().toLowerCase();
+            if (!rawQuery) return;
+
+            headlineElement.innerText = `🤖 Scanning: ${rawQuery.toUpperCase()}`;
+            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold; font-size:0.9rem;">Resolving indexes...</div>`;
+
+            let appId = null;
+            let resolvedName = rawQuery;
+
+            // 1. Check local catalog
+            if (STEAM_MAPPING_MATRIX[rawQuery]) {
+                appId = STEAM_MAPPING_MATRIX[rawQuery];
+            } else {
+                // 2. Automated network store lookups
+                try {
+                    const searchUrl = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(rawQuery)}&l=english&cc=US`;
+                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`;
+                    
+                    const searchResponse = await fetch(proxyUrl);
+                    if (searchResponse.ok) {
+                        const searchWrap = await searchResponse.json();
+                        const searchPayload = JSON.parse(searchWrap.contents);
+                        
+                        if (searchPayload && searchPayload.items && searchPayload.items.length > 0) {
+                            appId = searchPayload.items[0].id;
+                            resolvedName = searchPayload.items[0].name;
+                        }
+                    }
+                } catch (searchError) {
+                    console.error("Dynamic index locator drop:", searchError);
+                }
+            }
+
+            if (!appId) {
+                headlineElement.innerText = `🤖 Game Intelligence Scan`;
+                contentArea.innerHTML = `
+                    <div style="text-align: center; padding: 25px 10px;">
+                        <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Database Miss</h4>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Could not automatically map "${rawQuery}". Verify spelling or retry standard title formats.</p>
+                    </div>`;
+                return;
+            }
+
+            headlineElement.innerText = `🤖 Logs: ${resolvedName.toUpperCase()}`;
+
+            // 3. Request actual news arrays
+            try {
+                const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=15`)}`;
+                
+                const response = await fetch(steamEndpoint);
+                if (!response.ok) throw new Error("CORS Proxy node dropped link");
+                
+                const wrap = await response.json();
+                if (!wrap || !wrap.contents) throw new Error("Empty matrix payload headers");
+                
+                const cleanPayload = JSON.parse(wrap.contents);
+                if (!cleanPayload || !cleanPayload.appnews || !cleanPayload.appnews.newsitems) {
+                    throw new Error("Target mapping structure fault");
+                }
+
+                const newsItems = cleanPayload.appnews.newsitems;
+
+                if (newsItems.length === 0) {
+                    contentArea.innerHTML = `
+                        <div style="text-align: center; padding: 25px 10px;">
+                            <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Logs Empty</h4>
+                            <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">No active development logs or patch strings discovered for this App ID.</p>
+                        </div>`;
+                    return;
+                }
+
+                contentArea.innerHTML = '';
+                newsItems.forEach(item => {
+                    const formattedDate = new Date(item.date * 1000).toLocaleDateString('en-ZA', {
+                        day: 'numeric', month: 'short', year: 'numeric'
+                    });
+
+                    const nodeElement = document.createElement('div');
+                    nodeElement.className = 'news-node';
+                    nodeElement.innerHTML = `
+                        <h4><a href="${item.url}" target="_blank">${item.title}</a></h4>
+                        <div class="news-meta">
+                            <span>📡 ${item.feedlabel || 'Developer'}</span>
+                            <span>📅 ${formattedDate}</span>
+                        </div>
+                    `;
+                    contentArea.appendChild(nodeElement);
+                });
+
+            } catch (fault) {
+                console.error('Data pipeline error:', fault);
+                contentArea.innerHTML = `
+                    <div style="text-align: center; padding: 25px 10px;">
+                        <h4 style="margin: 0 0 5px 0; color: #ff4a4a; font-size:0.95rem;">Downlink Fault</h4>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Failed to sync records. Proxy server traffic limit reached; try again shortly.</p>
+                    </div>`;
+            }
+        }
+    </script>
+</body>
+</html>
