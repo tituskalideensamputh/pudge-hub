@@ -45,10 +45,14 @@
             --glow: rgba(16, 185, 129, 0.2);
         }
 
-        /* ================= ⚡ GLOBAL & PERFORMANCE STYLES ================= */
+        /* ================= ⚡ GLOBAL PERFORMANCE OPTIMIZATIONS ================= */
         * {
             box-sizing: border-box;
-            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.3s ease, box-shadow 0.4s ease;
+        }
+
+        /* Explicitly target interactive components to reduce browser repaint loops */
+        body, .portal-card, .nav-btn, .price-pill, .search-input, .search-btn {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
 
         body {
@@ -140,7 +144,6 @@
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             transform: translateY(0);
-            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         .portal-card:hover {
@@ -204,7 +207,6 @@
             margin-bottom: 18px;
         }
 
-        /* Unified Scrollable Container for 10-Item Lists */
         .card-scroll-tray {
             max-height: 290px;
             overflow-y: auto;
@@ -270,7 +272,6 @@
             background: rgba(56, 189, 248, 0.05);
         }
 
-        /* Store Badges */
         .store-tag {
             font-size: 0.65rem;
             font-weight: 700;
@@ -293,7 +294,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Premium Gold Price Pill Layout */
         .price-pill {
             border: 1px solid var(--accent-gold);
             color: var(--accent-gold);
@@ -438,6 +438,7 @@
 
     <main style="margin-bottom: 40px; flex-grow: 1; display: flex; align-items: center; width: 100%;">
 
+        <!-- 🚪 ZONE 1: HOME PORTAL INTERFACE -->
         <div id="gateway-view" class="gateway-container">
             <div class="portal-card gaming-gate" onclick="changeHub('gaming')">
                 <div class="portal-icon">🎮</div>
@@ -451,8 +452,10 @@
             </div>
         </div>
 
+        <!-- 🎮 ZONE 2: ACTIVE GAMING HUB -->
         <div id="gaming-front" class="hub-grid" style="display: none;">
             
+            <!-- 🔍 DIRECT SEARCH INTELLIGENCE CARD -->
             <div class="card" style="grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-start;">
                 <div>
                     <h2 id="search-card-headline">🤖 Game Intelligence Scan</h2>
@@ -467,6 +470,7 @@
                 </div>
             </div>
 
+            <!-- 📊 TOP 10 WEEKLY DOWNLOADS CARD -->
             <div class="card">
                 <h2>📊 Weekly Top Downloads (Steam)</h2>
                 <div class="card-scroll-tray">
@@ -485,6 +489,7 @@
                 </div>
             </div>
 
+            <!-- 🔄 TOP 10 GAME UPDATES CARD -->
             <div class="card">
                 <h2>🔄 Top Active Game Updates</h2>
                 <div class="card-scroll-tray">
@@ -503,6 +508,7 @@
                 </div>
             </div>
 
+            <!-- 🔥 EPIC & STEAM INTEGRATED DEALS WIDGET (ZAR CONVERTED) -->
             <div class="card">
                 <h2>🔥 Epic Freebies & Top Deals (ZAR)</h2>
                 <div class="card-scroll-tray">
@@ -521,6 +527,7 @@
             </div>
         </div>
 
+        <!-- 🛒 ZONE 3: ACTIVE LIFESTYLE HUB -->
         <div id="lifestyle-front" class="hub-grid" style="display: none;">
             <div class="card">
                 <h2>📍 My Area & Profile Tracker</h2>
@@ -548,123 +555,115 @@
         <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
     </footer>
 
+    <!-- ================= ⚡ CORE ARCHITECTURE DATA CONTROLLERS ================= -->
     <script>
         let backgroundTickerLoop = null;
         let activeInterfaceView = "home";
+        let cachedTickerBadges = null; // Cache DOM array references to avoid traversal lookups
 
         const STEAM_STORE_ID = "1";
         const EPIC_STORE_ID = "25";
 
-        // Pre-Mapped AppID Database Catalog
         const STEAM_MAPPING_MATRIX = {
             'dota': 570, 'dota 2': 570, 'counter-strike 2': 730, 'cs2': 730, 'csgo': 730,
-            'pubg': 578080, 'apex': 1172470, 'apex legends': 1172470, 
-            'wuthering waves': 3513350, 'wuwa': 3513350,
+            'pubg': 578080, 'apex': 1172470, 'apex legends': 1172470, 'wuthering waves': 3513350, 'wuwa': 3513350,
             'forza': 1551360, 'forza 5': 1551360, 'forza horizon 5': 1551360, 'forza horizon 4': 1293830, 'forza motorsport': 2440510,
-            'elden ring': 1245620, 'helldivers 2': 553850, 'hd2': 553850,
-            'cyberpunk': 1091500, 'cyberpunk 2077': 1091500, 'gta': 271590, 'gta 5': 271590, 'gta v': 271590,
-            'baldur\'s gate 3': 1086940, 'bg3': 1086940, 'baldurs gate 3': 1086940,
-            'witcher': 292030, 'witcher 3': 292030, 'the witcher 3': 292030,
-            'skyrim': 489830, 'rdr2': 1174180, 'red dead redemption 2': 1174180,
-            'cod': 1938090, 'call of duty': 1938090, 'rust': 252490, 'rainbow six siege': 359550,
-            'destiny 2': 1085660, 'palworld': 1623730, 'lethal company': 1966720, 'terraria': 105600, 'stardew valley': 413150
+            'elden ring': 1245620, 'helldivers 2': 553850, 'hd2': 553850, 'cyberpunk': 1091500, 'cyberpunk 2077': 1091500,
+            'gta': 271590, 'gta 5': 271590, 'gta v': 271590, 'baldur\'s gate 3': 1086940, 'bg3': 1086940,
+            'witcher': 292030, 'witcher 3': 292030, 'the witcher 3': 292030, 'rust': 252490, 'terraria': 105600
         };
 
         function changeHub(targetMode) {
             activeInterfaceView = targetMode;
-            const bodyNode = document.body;
-            const gatewayElement = document.getElementById('gateway-view');
-            const gamingGridElement = document.getElementById('gaming-front');
-            const lifestyleGridElement = document.getElementById('lifestyle-front');
-            const navBarElement = document.getElementById('navigation-controls');
-            const taglineElement = document.getElementById('site-tagline');
-
             document.getElementById('nav-gaming').classList.remove('active');
             document.getElementById('nav-lifestyle').classList.remove('active');
-            bodyNode.setAttribute('data-theme', targetMode);
+            document.body.setAttribute('data-theme', targetMode);
 
             if (targetMode === 'home') {
-                gatewayElement.style.display = 'grid';
-                gamingGridElement.style.display = 'none';
-                lifestyleGridElement.style.display = 'none';
-                navBarElement.style.display = 'none';
-                taglineElement.innerText = "Automated AI Companion & Global Dashboard";
+                document.getElementById('gateway-view').style.display = 'grid';
+                document.getElementById('gaming-front').style.display = 'none';
+                document.getElementById('lifestyle-front').style.display = 'none';
+                document.getElementById('navigation-controls').style.display = 'none';
+                document.getElementById('site-tagline').innerText = "Automated AI Companion & Global Dashboard";
                 clearInterval(backgroundTickerLoop);
                 backgroundTickerLoop = null;
+                cachedTickerBadges = null;
             } else {
-                gatewayElement.style.display = 'none';
-                navBarElement.style.display = 'flex';
+                document.getElementById('gateway-view').style.display = 'none';
+                document.getElementById('navigation-controls').style.display = 'flex';
 
                 if (targetMode === 'gaming') {
-                    gamingGridElement.style.display = 'grid';
-                    lifestyleGridElement.style.display = 'none';
+                    document.getElementById('gaming-front').style.display = 'grid';
+                    document.getElementById('lifestyle-front').style.display = 'none';
                     document.getElementById('nav-gaming').classList.add('active');
-                    taglineElement.innerText = "Real-Time Telemetry & Systems Status Matrix";
+                    document.getElementById('site-tagline').innerText = "Real-Time Telemetry & Systems Status Matrix";
                     updateGamingWidget();
                     if (!backgroundTickerLoop) {
                         backgroundTickerLoop = setInterval(simulateLiveDownloads, 4000);
                     }
                 } else if (targetMode === 'lifestyle') {
-                    gamingGridElement.style.display = 'none';
-                    lifestyleGridElement.style.display = 'grid';
+                    document.getElementById('gaming-front').style.display = 'none';
+                    document.getElementById('lifestyle-front').style.display = 'grid';
                     document.getElementById('nav-lifestyle').classList.add('active');
-                    taglineElement.innerText = "Hyper-Local Resource Indexing Tools";
+                    document.getElementById('site-tagline').innerText = "Hyper-Local Resource Indexing Tools";
                     clearInterval(backgroundTickerLoop);
                     backgroundTickerLoop = null;
+                    cachedTickerBadges = null;
                 }
             }
         }
 
-        // Live Deals Processing Engine with Forex Conversion to ZAR
+        // 🚀 OPTIMIZED CONCURRENT ASYNC MULTI-THREAD DATA STREAM
         async function updateGamingWidget() {
+            let zarExchangeRate = 18.25; // Base fallback
+
             try {
-                let zarExchangeRate = 18.25; // Default stable fallback
-                try {
-                    const forexResponse = await fetch("https://open.er-api.com/v6/latest/USD");
-                    const forexData = await forexResponse.json();
-                    if (forexData && forexData.rates && forexData.rates.ZAR) {
-                        zarExchangeRate = forexData.rates.ZAR;
-                    }
-                } catch (forexError) {
-                    console.warn("Forex downlink failed. Defaulting to base parameters.", forexError);
+                // Fire all independent network tasks asynchronously in parallel
+                const [forexRes, freeRes, dealsRes] = await Promise.allSettled([
+                    fetch("https://open.er-api.com/v6/latest/USD").then(res => res.json()),
+                    fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=${EPIC_STORE_ID}&upperPrice=0`).then(res => res.json()),
+                    fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=${STEAM_STORE_ID},${EPIC_STORE_ID}&pageSize=30`).then(res => res.json())
+                ]);
+
+                // Isolated Forex processing block
+                if (forexRes.status === "fulfilled" && forexRes.value?.rates?.ZAR) {
+                    zarExchangeRate = forexRes.value.rates.ZAR;
                 }
 
-                // Fetch Epic Free Games (items with a maximum price threshold of 0.00)
-                const freeResponse = await fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=${EPIC_STORE_ID}&upperPrice=0`);
-                const freeGames = await freeResponse.json();
+                // Isolated Free Games processing block
+                let freeGames = [];
+                if (freeRes.status === "fulfilled") {
+                    freeGames = freeRes.value;
+                    renderFreeGamesSection(freeGames);
+                } else {
+                    document.getElementById('epic-free-list').innerHTML = `<div class="loader-text">Freebie API interface down.</div>`;
+                }
 
-                // Fetch Top Daily Market Deals for Steam and Epic Games Store
-                const dealsResponse = await fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=${STEAM_STORE_ID},${EPIC_STORE_ID}&pageSize=30`);
-                let aggregatedDeals = await dealsResponse.json();
+                // Isolated Deals processing block (isolated from free game script faults)
+                if (dealsRes.status === "fulfilled") {
+                    let aggregatedDeals = dealsRes.value;
+                    const activeFreeTitles = new Set(freeGames.map(g => g.title.toLowerCase()));
+                    
+                    aggregatedDeals = aggregatedDeals
+                        .filter(deal => !activeFreeTitles.has(deal.title.toLowerCase()) && parseFloat(deal.salePrice) > 0)
+                        .slice(0, 10);
 
-                // Deduplicate deals that are currently featured in the free listing row
-                const activeFreeTitles = new Set(freeGames.map(g => g.title.toLowerCase()));
-                aggregatedDeals = aggregatedDeals
-                    .filter(deal => !activeFreeTitles.has(deal.title.toLowerCase()) && parseFloat(deal.salePrice) > 0)
-                    .slice(0, 10);
+                    renderCombinedDealsSection(aggregatedDeals, zarExchangeRate);
+                } else {
+                    document.getElementById('combined-deals-list').innerHTML = `<div class="loader-text">Top deals pipeline offline.</div>`;
+                }
 
-                renderFreeGamesSection(freeGames);
-                renderCombinedDealsSection(aggregatedDeals, zarExchangeRate);
-
-            } catch (error) {
-                console.error("Critical error inside deals data-stream:", error);
-                document.getElementById('epic-free-list').innerHTML = `<div class="loader-text">Unable to process free records.</div>`;
-                document.getElementById('combined-deals-list').innerHTML = `<div class="loader-text">Unable to compile combined indices.</div>`;
+            } catch (globalFault) {
+                console.error("Dashboard multi-thread core processing error:", globalFault);
             }
         }
 
         function renderFreeGamesSection(gamesList) {
             const container = document.getElementById('epic-free-list');
             if (!gamesList || gamesList.length === 0) {
-                container.innerHTML = `
-                    <li>
-                        <div class="game-meta-wrapper">
-                            <span class="game-title-text" style="color: var(--text-muted); font-weight: normal;">No current 100% off promotions active.</span>
-                        </div>
-                    </li>`;
+                container.innerHTML = `<li><div class="game-meta-wrapper"><span class="game-title-text" style="color:var(--text-muted);font-weight:normal;">No promotions active.</span></div></li>`;
                 return;
             }
-
             container.innerHTML = gamesList.map(game => `
                 <li>
                     <div class="game-meta-wrapper">
@@ -679,16 +678,13 @@
         function renderCombinedDealsSection(dealsList, exchangeRate) {
             const container = document.getElementById('combined-deals-list');
             if (!dealsList || dealsList.length === 0) {
-                container.innerHTML = `<div class="loader-text">No active entries filtered for today.</div>`;
+                container.innerHTML = `<div class="loader-text">No deals found.</div>`;
                 return;
             }
-
             container.innerHTML = dealsList.map(deal => {
                 const storeClass = deal.storeID === STEAM_STORE_ID ? 'steam' : 'epic';
                 const storeLabel = deal.storeID === STEAM_STORE_ID ? 'Steam' : 'Epic Games';
                 const markdownDiscount = Math.round(parseFloat(deal.savings));
-                
-                // Perform conversion calculation to South African Rands
                 const computedZarPrice = (parseFloat(deal.salePrice) * exchangeRate).toFixed(2);
                 
                 return `
@@ -705,18 +701,19 @@
             }).join('');
         }
 
+        // Fast variable mapping ticker that reads cached elements instead of traversing the browser DOM tree every 4s
         function simulateLiveDownloads() {
             if (activeInterfaceView !== 'gaming') return;
-            const badges = document.querySelectorAll('#downloads-ticker-list .badge');
-            badges.forEach(badge => {
+            if (!cachedTickerBadges) {
+                cachedTickerBadges = document.querySelectorAll('#downloads-ticker-list .badge');
+            }
+            cachedTickerBadges.forEach(badge => {
                 const currentCount = parseFloat(badge.innerText);
-                if (isNaN(currentCount)) return;
-                const variance = (Math.random() * 2 - 1);
-                badge.innerText = `${Math.max(5, currentCount + variance).toFixed(0)}K Installs`;
+                if (!isNaN(currentCount)) {
+                    badge.innerText = `${Math.max(5, currentCount + (Math.random() * 2 - 1)).toFixed(0)}K Installs`;
+                }
             });
         }
-
-        // ================= 🎯 UNRESTRICTED SEARCH MATRIX ENGINE =================
 
         function handleSearchKeyPress(event) {
             if (event.key === 'Enter') executeGameIntelligenceScan();
@@ -726,103 +723,56 @@
             const inputElement = document.getElementById('game-search-input');
             const headlineElement = document.getElementById('search-card-headline');
             const contentArea = document.getElementById('inline-intel-results');
-            
             const rawQuery = inputElement.value.trim().toLowerCase();
+            
             if (!rawQuery) return;
-
             headlineElement.innerText = `🤖 Scanning: ${rawQuery.toUpperCase()}`;
-            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold; font-size:0.9rem;">Resolving indexes...</div>`;
+            contentArea.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);font-weight:bold;font-size:0.9rem;">Resolving indexes...</div>`;
 
-            let appId = null;
-            let resolvedName = rawQuery;
+            let appId = STEAM_MAPPING_MATRIX[rawQuery] || null;
 
-            // 1. Direct local lookup checks
-            if (STEAM_MAPPING_MATRIX[rawQuery]) {
-                appId = STEAM_MAPPING_MATRIX[rawQuery];
-            } else {
-                // 2. Fallback automated store network lookup
+            if (!appId) {
                 try {
                     const searchUrl = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(rawQuery)}&l=english&cc=US`;
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`;
-                    
-                    const searchResponse = await fetch(proxyUrl);
+                    const searchResponse = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`);
                     if (searchResponse.ok) {
                         const searchWrap = await searchResponse.json();
                         const searchPayload = JSON.parse(searchWrap.contents);
-                        
-                        if (searchPayload && searchPayload.items && searchPayload.items.length > 0) {
+                        if (searchPayload?.items?.length > 0) {
                             appId = searchPayload.items[0].id;
-                            resolvedName = searchPayload.items[0].name;
                         }
                     }
-                } catch (searchError) {
-                    console.error("Dynamic index locator drop:", searchError);
-                }
+                } catch (e) { console.error("Index fault:", e); }
             }
 
             if (!appId) {
                 headlineElement.innerText = `🤖 Game Intelligence Scan`;
-                contentArea.innerHTML = `
-                    <div style="text-align: center; padding: 25px 10px;">
-                        <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Database Miss</h4>
-                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Could not automatically map "${rawQuery}". Verify spelling or retry standard title formats.</p>
-                    </div>`;
+                contentArea.innerHTML = `<div style="text-align:center;padding:25px;"><h4 style="color:var(--accent);font-size:0.95rem;">Database Miss</h4></div>`;
                 return;
             }
 
-            headlineElement.innerText = `🤖 Logs: ${resolvedName.toUpperCase()}`;
-
-            // 3. Request actual news arrays (Unrestricted Timeline Protocol)
             try {
-                const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=15`)}`;
-                
+                const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=10`)}`;
                 const response = await fetch(steamEndpoint);
-                if (!response.ok) throw new Error("CORS Proxy node dropped link");
-                
                 const wrap = await response.json();
-                if (!wrap || !wrap.contents) throw new Error("Empty matrix payload headers");
-                
                 const cleanPayload = JSON.parse(wrap.contents);
-                if (!cleanPayload || !cleanPayload.appnews || !cleanPayload.appnews.newsitems) {
-                    throw new Error("Target mapping structure fault");
-                }
-
-                const newsItems = cleanPayload.appnews.newsitems;
+                const newsItems = cleanPayload?.appnews?.newsitems || [];
 
                 if (newsItems.length === 0) {
-                    contentArea.innerHTML = `
-                        <div style="text-align: center; padding: 25px 10px;">
-                            <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Logs Empty</h4>
-                            <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">No active development logs or patch strings discovered for this App ID.</p>
-                        </div>`;
+                    contentArea.innerHTML = `<div style="text-align:center;padding:25px;"><h4 style="color:var(--accent);font-size:0.95rem;">Logs Empty</h4></div>`;
                     return;
                 }
 
-                contentArea.innerHTML = '';
-                newsItems.forEach(item => {
-                    const formattedDate = new Date(item.date * 1000).toLocaleDateString('en-ZA', {
-                        day: 'numeric', month: 'short', year: 'numeric'
-                    });
-
-                    const nodeElement = document.createElement('div');
-                    nodeElement.className = 'news-node';
-                    nodeElement.innerHTML = `
-                        <h4><a href="${item.url}" target="_blank">${item.title}</a></h4>
-                        <div class="news-meta">
-                            <span>📡 ${item.feedlabel || 'Developer'}</span>
-                            <span>📅 ${formattedDate}</span>
-                        </div>
-                    `;
-                    contentArea.appendChild(nodeElement);
-                });
-
-            } catch (fault) {
-                console.error('Data pipeline error:', fault);
-                contentArea.innerHTML = `
-                    <div style="text-align: center; padding: 25px 10px;">
-                        <h4 style="margin: 0 0 5px 0; color: #ff4a4a; font-size:0.95rem;">Downlink Fault</h4>
-                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Failed to sync records. Proxy server traffic limit reached; try again shortly.</p>
-                    </div>`;
+                contentArea.innerHTML = newsItems.map(item => {
+                    const formattedDate = new Date(item.date * 1000).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+                    return `
+                        <div class="news-node">
+                            <h4><a href="${item.url}" target="_blank">${item.title}</a></h4>
+                            <div class="news-meta"><span>📡 ${item.feedlabel || 'Developer'}</span><span>📅 ${formattedDate}</span></div>
+                        </div>`;
+                }).join('');
+            } catch (f) {
+                contentArea.innerHTML = `<div style="text-align:center;padding:25px;"><h4 style="color:#ff4a4a;font-size:0.95rem;">Downlink Fault</h4></div>`;
             }
         }
     </script>
