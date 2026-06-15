@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pudge | Automated AI Companion & Global Dashboard</title>
+    <title>Pudge.co.za | Automated AI Companion & Global Dashboard</title>
     <style>
         /* ================= 🎨 MORPHING THEME SYSTEM ================= */
         :root, [data-theme="home"] {
@@ -404,6 +404,7 @@
 
     <main style="margin-bottom: 40px; flex-grow: 1; display: flex; align-items: center; width: 100%;">
 
+        <!-- 🚪 ZONE 1: MINIMALIST GATEWAY VIEW -->
         <div id="gateway-view" class="gateway-container">
             <div class="portal-card gaming-gate" onclick="changeHub('gaming')">
                 <div class="portal-icon">🎮</div>
@@ -417,6 +418,7 @@
             </div>
         </div>
 
+        <!-- 🎮 ZONE 2: ACTIVE GAMING HUB -->
         <div id="gaming-front" class="hub-grid" style="display: none;">
             <div class="card">
                 <div>
@@ -427,7 +429,7 @@
                     <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 15px;">Updated by Llama-3 AI 42 minutes ago</p>
                 </div>
                 <div class="search-container">
-                    <input type="text" id="game-search-input" class="search-input" placeholder="Enter target game name (e.g. dota, cs2)..." onkeypress="handleSearchKeyPress(event)">
+                    <input type="text" id="game-search-input" class="search-input" placeholder="Enter target game name (e.g. dota, cs2, wuwa)..." onkeypress="handleSearchKeyPress(event)">
                     <button class="search-btn" onclick="executeGameIntelligenceScan()">Scan</button>
                 </div>
             </div>
@@ -460,6 +462,7 @@
             </div>
         </div>
 
+        <!-- 🛒 ZONE 3: ACTIVE LIFESTYLE HUB -->
         <div id="lifestyle-front" class="hub-grid" style="display: none;">
             <div class="card">
                 <h2>📍 My Area & Profile Tracker</h2>
@@ -483,6 +486,7 @@
         </div>
     </main>
 
+    <!-- 👁️ THEME-DRIVEN TACTICAL OVERLAY MODAL -->
     <div id="intel-modal" class="modal-overlay" onclick="closeIntelModalOutside(event)">
         <div class="modal-box">
             <div class="modal-header">
@@ -494,19 +498,21 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 Pudge.co.za. Powered by Titus Kalideen.</p>
+        <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
     </footer>
 
+    <!-- ================= ⚡ CORE ARCHITECTURE DATA CONTROLLERS ================= -->
     <script>
         let backgroundTickerLoop = null;
         let activeInterfaceView = "home";
 
-        // Global Static AppID ID Catalog to map text to real Steam feeds without any token barriers
+        // Global Static AppID ID Catalog matching user queries directly to clean developer endpoints
         const STEAM_MAPPING_MATRIX = {
             'dota': 570, 'dota 2': 570, 'counter-strike 2': 730, 'cs2': 730, 'csgo': 730,
-            'pubg': 578080, 'apex': 1172470, 'apex legends': 1172470, 'wuthering waves': 2933620,
-            'wuwa': 2933620, 'elden ring': 1245620, 'helldivers 2': 553850, 'gta': 271590,
-            'cyberpunk': 1091500, 'witcher': 292030, 'valorant': 570, 'cod': 1938090
+            'pubg': 578080, 'apex': 1172470, 'apex legends': 1172470, 
+            'wuthering waves': 3513350, 'wuwa': 3513350, 
+            'elden ring': 1245620, 'helldivers 2': 553850, 'gta': 271590,
+            'cyberpunk': 1091500, 'witcher': 292030, 'cod': 1938090
         };
 
         function changeHub(targetMode) {
@@ -607,7 +613,7 @@
             }
         }
 
-        // ================= 🎯 Bulletproof Steam Pipeline (CORS Free) =================
+        // ================= 🎯 Bulletproof Steam Pipeline (CORS Clean) =================
 
         function handleSearchKeyPress(event) {
             if (event.key === 'Enter') executeGameIntelligenceScan();
@@ -623,25 +629,41 @@
             const contentArea = document.getElementById('modal-content-area');
 
             modalHeadline.innerText = `🚨 SCANNING CORE FEED: ${rawQuery.toUpperCase()}`;
-            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Harvesting corporate news streams & enforcing 60-day rule...</div>`;
+            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Harvesting corporate news streams...</div>`;
             modalOverlay.style.display = 'flex';
 
-            // Find valid ID, default back to Dota 2 if mismatch
-            const appId = STEAM_MAPPING_MATRIX[rawQuery] || 570;
+            // Catch games not indexed in your matrix setup
+            if (!STEAM_MAPPING_MATRIX[rawQuery]) {
+                contentArea.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">⚠️</div>
+                        <h4 style="margin: 0 0 10px 0; color: var(--accent);">Target Index Vector Omitted</h4>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">"${rawQuery}" is not mapped in your current local index. Try running a scan on 'wuwa', 'cs2', or 'elden ring'.</p>
+                    </div>`;
+                return;
+            }
+
+            const appId = STEAM_MAPPING_MATRIX[rawQuery];
 
             try {
-                // Official Steam corporate feed endpoint (100% immune to typical CORS web blocking blocks)
                 const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=15`)}`;
                 
                 const response = await fetch(steamEndpoint);
+                if (!response.ok) throw new Error("CORS Proxy node rejected downlinks");
+                
                 const wrap = await response.json();
+                if (!wrap || !wrap.contents) throw new Error("Target data wrapper returned empty payload");
+                
                 const cleanPayload = JSON.parse(wrap.contents);
-                const newsItems = cleanPayload.appnews.newsitems;
+                if (!cleanPayload || !cleanPayload.appnews || !cleanPayload.appnews.newsitems) {
+                    throw new Error("Steam database structures mismatch (Invalid App ID schema)");
+                }
 
+                const newsItems = cleanPayload.appnews.newsitems;
                 const currentEpochSeconds = Math.floor(Date.now() / 1000);
                 const sixtyDaysSeconds = 60 * 24 * 60 * 60;
 
-                // Strip and clean entries outside of our 2 month boundary loop
+                // Restrict and display elements modified inside a 60-day window
                 const dynamicTimelineNodes = newsItems.filter(item => {
                     const age = currentEpochSeconds - item.date;
                     return age <= sixtyDaysSeconds;
@@ -651,8 +673,8 @@
                     contentArea.innerHTML = `
                         <div style="text-align: center; padding: 40px;">
                             <div style="font-size: 2.5rem; margin-bottom: 15px;">📡</div>
-                            <h4 style="margin: 0 0 10px 0; color: var(--accent);">No Recent Telemetry</h4>
-                            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No official developer broadcasts logs discovered for App ID: ${appId} within the past 60 days.</p>
+                            <h4 style="margin: 0 0 10px 0; color: var(--accent);">No Recent Telemetry Logged</h4>
+                            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No active developer blogs or official patch cycles found for App ID: ${appId} over the last 60 days.</p>
                         </div>`;
                     return;
                 }
@@ -668,7 +690,7 @@
                     nodeElement.innerHTML = `
                         <h4><a href="${item.url}" target="_blank">${item.title}</a></h4>
                         <div class="news-meta">
-                            <span>📡 Source: ${item.feedlabel || 'Developer Blog'}</span>
+                            <span>📡 Source: ${item.feedlabel || 'Developer System'}</span>
                             <span>📅 ${formattedDate}</span>
                         </div>
                     `;
@@ -676,8 +698,13 @@
                 });
 
             } catch (fault) {
-                console.error('Steam pipeline crash:', fault);
-                contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: #ff4a4a; font-weight: bold;">Downlink connection timed out. Let's retry that scan.</div>`;
+                console.error('Data vector structural fault:', fault);
+                contentArea.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px;">❌</div>
+                        <h4 style="margin: 0 0 10px 0; color: #ff4a4a;">Downlink Connection Interrupted</h4>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Reason: ${fault.message}. Check your internet connection or retry the transmission request.</p>
+                    </div>`;
             }
         }
 
