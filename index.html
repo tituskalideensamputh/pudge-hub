@@ -228,19 +228,10 @@
             background: rgba(16, 185, 129, 0.05);
         }
 
-        .ai-summary {
-            background: rgba(255, 74, 74, 0.03);
-            border-left: 3px solid var(--accent);
-            padding: 14px;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
         .search-container {
             display: flex;
             gap: 8px;
-            margin-top: 15px;
+            margin-top: 5px;
         }
 
         .search-input {
@@ -248,7 +239,7 @@
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 10px 14px;
+            padding: 11px 14px;
             border-radius: 8px;
             font-size: 0.9rem;
             outline: none;
@@ -262,7 +253,7 @@
             background: var(--accent);
             color: #ffffff;
             border: none;
-            padding: 10px 16px;
+            padding: 10px 18px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
@@ -274,94 +265,51 @@
             opacity: 0.9;
         }
 
-        /* ================= 👁️ TACTICAL OVERLAY MODAL ================= */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 7, 12, 0.85);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-box {
-            background-color: var(--card-bg);
-            border: 2px solid var(--accent);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 650px;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 40px var(--glow);
-            animation: modalFadeIn 0.2s ease-out;
-        }
-
-        @keyframes modalFadeIn {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            font-size: 1.3rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .modal-close {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.7rem;
-            cursor: pointer;
-            line-height: 1;
-        }
-
-        .modal-close:hover {
-            color: var(--accent);
-        }
-
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
+        /* Inline Scrollable Data Tray */
+        .intel-scroll-tray {
+            margin-top: 15px;
             flex-grow: 1;
+            overflow-y: auto;
+            max-height: 360px;
+            padding-right: 4px;
+        }
+
+        .intel-scroll-tray::-webkit-scrollbar {
+            width: 5px;
+        }
+        .intel-scroll-tray::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .intel-scroll-tray::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+        .intel-scroll-tray::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
         }
 
         .news-node {
             background: rgba(255, 255, 255, 0.01);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
         }
 
         .news-node:last-child {
             margin-bottom: 0;
         }
 
+        .news-node h4 {
+            margin: 0 0 6px 0;
+        }
+
         .news-node h4 a {
             color: var(--text-main);
             text-decoration: none;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 700;
             line-height: 1.4;
-            display: inline-block;
-            margin-bottom: 8px;
         }
 
         .news-node h4 a:hover {
@@ -372,7 +320,7 @@
         .news-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -420,17 +368,19 @@
 
         <!-- 🎮 ZONE 2: ACTIVE GAMING HUB -->
         <div id="gaming-front" class="hub-grid" style="display: none;">
-            <div class="card">
+            
+            <!-- 🔍 DIRECT INTEGRATION SEARCH CARD -->
+            <div class="card" style="grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-start;">
                 <div>
-                    <h2>🤖 AI Game Updates (tl;dr)</h2>
-                    <div class="ai-summary">
-                        <strong>Dota 2 Patch 7.36 summary:</strong> AI analyzed 12,000 words of patch notes. Biggest shifts: Pudge base armor increased, Meat Hook travel speed slightly buffed. Meta shifting toward early map aggression.
+                    <h2 id="search-card-headline">🤖 Game Intelligence Scan</h2>
+                    <div class="search-container">
+                        <input type="text" id="game-search-input" class="search-input" placeholder="Search any game (e.g. forza, wuwa, cs2, elden ring)..." onkeypress="handleSearchKeyPress(event)">
+                        <button class="search-btn" onclick="executeGameIntelligenceScan()">Scan</button>
                     </div>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 15px;">Updated by Llama-3 AI 42 minutes ago</p>
                 </div>
-                <div class="search-container">
-                    <input type="text" id="game-search-input" class="search-input" placeholder="Type ANY game name (e.g. forza, cs2, elden ring)..." onkeypress="handleSearchKeyPress(event)">
-                    <button class="search-btn" onclick="executeGameIntelligenceScan()">Scan</button>
+                
+                <div id="inline-intel-results" class="intel-scroll-tray">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-top: 60px;">Awaiting search transmission... Run a query above to view updates and logs.</p>
                 </div>
             </div>
 
@@ -486,17 +436,6 @@
         </div>
     </main>
 
-    <!-- 👁️ THEME-DRIVEN TACTICAL OVERLAY MODAL -->
-    <div id="intel-modal" class="modal-overlay" onclick="closeIntelModalOutside(event)">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 id="modal-headline">INTELLIGENCE SCAN RECON</h3>
-                <button class="modal-close" onclick="closeIntelModal()">&times;</button>
-            </div>
-            <div id="modal-content-area" class="modal-body"></div>
-        </div>
-    </div>
-
     <footer>
         <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
     </footer>
@@ -506,11 +445,19 @@
         let backgroundTickerLoop = null;
         let activeInterfaceView = "home";
 
-        // Global Static Shortcuts (Fast-track indexing for aliases)
+        // Massive Pre-Mapped AppID Database Catalog
         const STEAM_MAPPING_MATRIX = {
             'dota': 570, 'dota 2': 570, 'counter-strike 2': 730, 'cs2': 730, 'csgo': 730,
             'pubg': 578080, 'apex': 1172470, 'apex legends': 1172470, 
-            'wuthering waves': 3513350, 'wuwa': 3513350
+            'wuthering waves': 3513350, 'wuwa': 3513350,
+            'forza': 1551360, 'forza 5': 1551360, 'forza horizon 5': 1551360, 'forza horizon 4': 1293830, 'forza motorsport': 2440510,
+            'elden ring': 1245620, 'helldivers 2': 553850, 'hd2': 553850,
+            'cyberpunk': 1091500, 'cyberpunk 2077': 1091500, 'gta': 271590, 'gta 5': 271590, 'gta v': 271590,
+            'baldur\'s gate 3': 1086940, 'bg3': 1086940, 'baldurs gate 3': 1086940,
+            'witcher': 292030, 'witcher 3': 292030, 'the witcher 3': 292030,
+            'skyrim': 489830, 'rdr2': 1174180, 'red dead redemption 2': 1174180,
+            'cod': 1938090, 'call of duty': 1938090, 'rust': 252490, 'rainbow six siege': 359550,
+            'destiny 2': 1085660, 'palworld': 1623730, 'lethal company': 1966720, 'terraria': 105600, 'stardew valley': 413150
         };
 
         function changeHub(targetMode) {
@@ -611,7 +558,7 @@
             }
         }
 
-        // ================= 🎯 Unrestricted Dynamic Search & Pipeline =================
+        // ================= 🎯 Unified Inline Search Engine =================
 
         function handleSearchKeyPress(event) {
             if (event.key === 'Enter') executeGameIntelligenceScan();
@@ -619,25 +566,23 @@
 
         async function executeGameIntelligenceScan() {
             const inputElement = document.getElementById('game-search-input');
+            const headlineElement = document.getElementById('search-card-headline');
+            const contentArea = document.getElementById('inline-intel-results');
+            
             const rawQuery = inputElement.value.trim().toLowerCase();
             if (!rawQuery) return;
 
-            const modalOverlay = document.getElementById('intel-modal');
-            const modalHeadline = document.getElementById('modal-headline');
-            const contentArea = document.getElementById('modal-content-area');
-
-            modalHeadline.innerText = `🚨 SCANNING DATABASE: ${rawQuery.toUpperCase()}`;
-            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Resolving game identity vector...</div>`;
-            modalOverlay.style.display = 'flex';
+            headlineElement.innerText = `🤖 Scanning: ${rawQuery.toUpperCase()}`;
+            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold; font-size:0.9rem;">Resolving indexes...</div>`;
 
             let appId = null;
             let resolvedName = rawQuery;
 
-            // 1. Check local shortcuts first
+            // 1. Core mapping validation
             if (STEAM_MAPPING_MATRIX[rawQuery]) {
                 appId = STEAM_MAPPING_MATRIX[rawQuery];
             } else {
-                // 2. Dynamic catalog scan fallback for any unindexed game query
+                // 2. Dynamic store catalog lookup fallback
                 try {
                     const searchUrl = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(rawQuery)}&l=english&cc=US`;
                     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`;
@@ -650,63 +595,54 @@
                         if (searchPayload && searchPayload.items && searchPayload.items.length > 0) {
                             appId = searchPayload.items[0].id;
                             resolvedName = searchPayload.items[0].name;
-                            modalHeadline.innerText = `🚨 SCANNING CORE FEED: ${resolvedName.toUpperCase()}`;
-                            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Index located. Loading update streams...</div>`;
                         }
                     }
                 } catch (searchError) {
-                    console.error("Dynamic catalog search fault:", searchError);
+                    console.error("Dynamic lookup pipeline crash:", searchError);
                 }
             }
 
-            // Reject gracefully if the search returned absolute zero hits
+            // Halt if query returns null targets
             if (!appId) {
+                headlineElement.innerText = `🤖 Game Intelligence Scan`;
                 contentArea.innerHTML = `
-                    <div style="text-align: center; padding: 40px;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">⚠️</div>
-                        <h4 style="margin: 0 0 10px 0; color: var(--accent);">Target Database Miss</h4>
-                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Could not auto-resolve "${rawQuery}" to an active database listing. Please verify the game name and try again.</p>
+                    <div style="text-align: center; padding: 25px 10px;">
+                        <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Database Miss</h4>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Could not automatically map "${rawQuery}". Verify spelling or retry standard title formats.</p>
                     </div>`;
                 return;
             }
 
-            // 3. Request news streams via App ID
+            headlineElement.innerText = `🤖 Logs: ${resolvedName.toUpperCase()}`;
+
+            // 3. Fetch real-time live data array feeds
             try {
                 const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=15`)}`;
                 
                 const response = await fetch(steamEndpoint);
-                if (!response.ok) throw new Error("CORS Proxy node rejected downlinks");
+                if (!response.ok) throw new Error("CORS Proxy node dropped transaction link");
                 
                 const wrap = await response.json();
-                if (!wrap || !wrap.contents) throw new Error("Target data wrapper returned empty payload");
+                if (!wrap || !wrap.contents) throw new Error("Received empty cluster packet headers");
                 
                 const cleanPayload = JSON.parse(wrap.contents);
                 if (!cleanPayload || !cleanPayload.appnews || !cleanPayload.appnews.newsitems) {
-                    throw new Error("Steam database structures mismatch (Invalid App ID schema)");
+                    throw new Error("Target response mapping structural mutation error");
                 }
 
                 const newsItems = cleanPayload.appnews.newsitems;
-                const currentEpochSeconds = Math.floor(Date.now() / 1000);
-                const sixtyDaysSeconds = 60 * 24 * 60 * 60;
 
-                // Restrict and display elements modified inside a 60-day window
-                const dynamicTimelineNodes = newsItems.filter(item => {
-                    const age = currentEpochSeconds - item.date;
-                    return age <= sixtyDaysSeconds;
-                });
-
-                if (dynamicTimelineNodes.length === 0) {
+                if (newsItems.length === 0) {
                     contentArea.innerHTML = `
-                        <div style="text-align: center; padding: 40px;">
-                            <div style="font-size: 2.5rem; margin-bottom: 15px;">📡</div>
-                            <h4 style="margin: 0 0 10px 0; color: var(--accent);">No Recent Telemetry Logged</h4>
-                            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No active developer blogs or official patch cycles found for <strong>${resolvedName}</strong> (App ID: ${appId}) over the last 60 days.</p>
+                        <div style="text-align: center; padding: 25px 10px;">
+                            <h4 style="margin: 0 0 5px 0; color: var(--accent); font-size:0.95rem;">Logs Empty</h4>
+                            <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">No active development logs or patch strings discovered for this App ID.</p>
                         </div>`;
                     return;
                 }
 
                 contentArea.innerHTML = '';
-                dynamicTimelineNodes.forEach(item => {
+                newsItems.forEach(item => {
                     const formattedDate = new Date(item.date * 1000).toLocaleDateString('en-ZA', {
                         day: 'numeric', month: 'short', year: 'numeric'
                     });
@@ -716,7 +652,7 @@
                     nodeElement.innerHTML = `
                         <h4><a href="${item.url}" target="_blank">${item.title}</a></h4>
                         <div class="news-meta">
-                            <span>📡 Source: ${item.feedlabel || 'Developer System'}</span>
+                            <span>📡 ${item.feedlabel || 'Developer'}</span>
                             <span>📅 ${formattedDate}</span>
                         </div>
                     `;
@@ -724,22 +660,13 @@
                 });
 
             } catch (fault) {
-                console.error('Data vector structural fault:', fault);
+                console.error('Data pipeline error:', fault);
                 contentArea.innerHTML = `
-                    <div style="text-align: center; padding: 40px;">
-                        <div style="font-size: 2.5rem; margin-bottom: 15px;">❌</div>
-                        <h4 style="margin: 0 0 10px 0; color: #ff4a4a;">Downlink Connection Interrupted</h4>
-                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Reason: ${fault.message}. Check your internet connection or retry the transmission request.</p>
+                    <div style="text-align: center; padding: 25px 10px;">
+                        <h4 style="margin: 0 0 5px 0; color: #ff4a4a; font-size:0.95rem;">Downlink Fault</h4>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Failed to sync records. Proxy server traffic limit reached; try again shortly.</p>
                     </div>`;
             }
-        }
-
-        function closeIntelModal() {
-            document.getElementById('intel-modal').style.display = 'none';
-        }
-
-        function closeIntelModalOutside(event) {
-            if (event.target.id === 'intel-modal') closeIntelModal();
         }
     </script>
 </body>
