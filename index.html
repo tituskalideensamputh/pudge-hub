@@ -5,56 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pudge.co.za | The Data-Driven Gaming Hub</title>
     <style>
-        /* --- 🎛️ Hub Switcher Styles --- */
-.switcher-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 25px 0 35px 0;
-}
-
-.switch-btn {
-    background: #111622;
-    border: 2px solid #22293a;
-    color: #8a9fc2;
-    padding: 12px 24px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.25s ease-in-out;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.switch-btn:hover {
-    border-color: #ff4a4a;
-    color: #ffffff;
-}
-
-.switch-btn.active {
-    background: #ff4a4a;
-    border-color: #ff4a4a;
-    color: #ffffff;
-    box-shadow: 0 0 20px rgba(255, 74, 74, 0.35);
-}
-
-/* Ensure both hubs share the exact same beautiful grid structure */
-.hub-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 25px;
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-@media (max-width: 900px) {
-    .hub-grid {
-        grid-template-columns: 1fr;
-    }
-}
         :root {
             --bg-dark: #0f111a;
             --card-bg: #161925;
@@ -75,30 +25,73 @@
         header {
             background-color: var(--card-bg);
             border-bottom: 1px solid #25293a;
-            padding: 20px;
+            padding: 40px 20px 20px 20px;
             text-align: center;
         }
 
         header h1 {
             margin: 0;
             color: var(--accent-red);
-            font-size: 2rem;
-            letter-spacing: 1px;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
         }
 
         header p {
             margin: 5px 0 0 0;
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            color: #64748b;
+            font-size: 1rem;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
+        /* --- 🎛️ Hub Switcher Styles --- */
+        .switcher-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0 15px 0;
+        }
+
+        .switch-btn {
+            background: #111622;
+            border: 2px solid #22293a;
+            color: #8a9fc2;
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .switch-btn:hover {
+            border-color: var(--accent-red);
+            color: #ffffff;
+        }
+
+        .switch-btn.active {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 74, 74, 0.35);
+        }
+
+        /* Ensure both hubs share the exact same grid structure */
+        .hub-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) {
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .card {
@@ -161,381 +154,201 @@
             padding: 40px 20px;
             color: var(--text-muted);
             font-size: 0.85rem;
+            border-top: 1px solid #1e293b;
+            max-width: 1100px;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
 
+    <!-- Main Header Component -->
     <header>
-               <!-- Main Header -->
-<header style="text-align: center; margin-top: 40px;">
-    <h1 style="color: #ff4a4a; font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 5px;">PUDGE.CO.ZA</h1>
-    <p style="color: #64748b; font-size: 1rem;">Automated AI Companion & Global Dashboard</p>
+        <h1>PUDGE.CO.ZA</h1>
+        <p>Automated AI Companion & Global Dashboard</p>
 
-    <!-- 🎛️ The Hub Switcher Component -->
-    <div class="switcher-container">
-        <button id="btn-gaming" class="switch-btn active" onclick="switchHub('gaming')">🎮 Gaming Mode</button>
-        <button id="btn-lifestyle" class="switch-btn" onclick="switchHub('lifestyle')">🛒 Lifestyle Mode</button>
-    </div>
-</header>
-
-<!-- Main Container -->
-<main style="padding: 0 20px; margin-bottom: 60px;">
-
-    <!-- ================= 🎮 GAMING HUb ================= -->
-    <div id="gaming-front" class="hub-grid">
-        
-        <!-- Card 1: AI Updates -->
-        <div class="card">
-            <h2>🤖 AI Game Updates (tl;dr)</h2>
-            <!-- Keep your existing content inside here -->
+        <!-- Hub Switcher Interface -->
+        <div class="switcher-container">
+            <button id="btn-gaming" class="switch-btn active" onclick="switchHub('gaming')">🎮 Gaming Mode</button>
+            <button id="btn-lifestyle" class="switch-btn" onclick="switchHub('lifestyle')">🛒 Lifestyle Mode</button>
         </div>
-
-        <!-- Card 2: Trending Games -->
-        <div class="card">
-            <h2>📊 Trending Games (Global)</h2>
-            <!-- Keep your existing content inside here -->
-        </div>
-
-        <!-- Card 3: SA Server Status (Typo Fixed! 🇿🇦) -->
-        <div class="card">
-            <h2>🇿🇦 SA Server Status (ZA Regions)</h2>
-            <!-- Keep your existing content inside here -->
-        </div>
-
-        <!-- Card 4: Epic Deals -->
-        <div class="card">
-            <h2>🔥 Epic Gaming Deals & Freebies</h2>
-            <ul class="data-list" id="epic-deals-list">
-                <li><span>Loading live data streams...</span></li>
-            </ul>
-        </div>
-
-    </div>
-
-    <!-- ================= 🛒 LIFESTYLE HUB ================= -->
-    <div id="lifestyle-front" class="hub-grid" style="display: none;">
-        
-        <!-- Card 1: Local Profile Tracker -->
-        <div class="card">
-            <h2>📍 My Area & Profile Tracker</h2>
-            <ul class="data-list">
-                <li>
-                    <span>Current Suburb:</span>
-                    <span class="badge" id="user-location" style="background: rgba(255,74,74,0.1); color: #ff4a4a;">Detecting Location...</span>
-                </li>
-                <li>
-                    <span>Shopping Taste:</span>
-                    <span class="badge" style="background: rgba(100,116,139,0.1); color: #94a3b8;">Essentials & Tech</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Card 2: Price Radar Comparisons -->
-        <div class="card">
-            <h2>🔍 Real-Time Price Radar</h2>
-            <ul class="data-list" id="price-radar-list">
-                <li><span>Initializing price indexing matrices...</span></li>
-            </ul>
-        </div>
-
-        <!-- Card 3: Smart Basket Aggregator -->
-        <div class="card">
-            <h2>💡 Smart Basket Optimizer</h2>
-            <ul class="data-list" id="basket-optimizer-list">
-                <li><span>Awaiting item selection to calculate overall values...</span></li>
-            </ul>
-        </div>
-
-    </div>
-
-</main>
     </header>
 
-    <div class="container">
+    <!-- Content Workspace -->
+    <main style="padding: 30px 20px; margin-bottom: 60px;">
 
-        <!-- AI Patch Notes Section -->
-        <div class="card">
-            <h2>🤖 AI Game Updates (tl;dr)</h2>
-            <div class="ai-summary">
-                <strong>Dota 2 Patch 7.36 summary:</strong> AI analyzed 12,000 words of patch notes. Biggest shifts: Pudge base armor increased, Meat Hook travel speed slightly buffed. Meta shifting toward early map aggression.
+        <!-- ================= 🎮 GAMING HUB ================= -->
+        <div id="gaming-front" class="hub-grid">
+            
+            <!-- Card 1: AI Updates -->
+            <div class="card">
+                <h2>🤖 AI Game Updates (tl;dr)</h2>
+                <div class="ai-summary">
+                    <strong>Dota 2 Patch 7.36 summary:</strong> AI analyzed 12,000 words of patch notes. Biggest shifts: Pudge base armor increased, Meat Hook travel speed slightly buffed. Meta shifting toward early map aggression.
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px; margin-bottom: 0;">Updated by Llama-3 AI 42 minutes ago</p>
             </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Updated by Llama-3 AI 42 minutes ago</p>
+
+            <!-- Card 2: Trending Games -->
+            <div class="card">
+                <h2>📊 Trending Games (Global)</h2>
+                <ul class="data-list">
+                    <li><span>Counter-Strike 2</span> <span class="badge">842K Live</span></li>
+                    <li><span>Dota 2</span> <span class="badge">411K Live</span></li>
+                    <li><span>PUBG: BATTLEGROUNDS</span> <span class="badge">285K Live</span></li>
+                    <li><span>Apex Legends</span> <span class="badge">144K Live</span></li>
+                </ul>
+            </div>
+
+            <!-- Card 3: SA Server Status -->
+            <div class="card">
+                <h2>🇿🇦 SA Server Status (ZA Regions)</h2>
+                <ul class="data-list">
+                    <li><span>Valorant (JHB)</span> <span class="badge active">● Operational (14ms)</span></li>
+                    <li><span>Dota 2 (CPT)</span> <span class="badge active">● Operational (8ms)</span></li>
+                    <li><span>Apex Legends (JHB)</span> <span class="badge active">● Operational (19ms)</span></li>
+                    <li><span>Call of Duty (ZA)</span> <span class="badge active">● Operational (12ms)</span></li>
+                </ul>
+            </div>
+
+            <!-- Card 4: Epic Deals -->
+            <div class="card">
+                <h2>🔥 Epic Gaming Deals & Freebies</h2>
+                <ul class="data-list" id="epic-deals-list">
+                    <li><span>Loading live data streams...</span></li>
+                </ul>
+            </div>
+
         </div>
 
-        <!-- Global Steam Player Counts -->
-        <div class="card">
-            <h2>📊 Trending Games (Global)</h2>
-            <ul class="data-list">
-                <li><span>Counter-Strike 2</span> <span class="badge">842K Live</span></li>
-                <li><span>Dota 2</span> <span class="badge">411K Live</span></li>
-                <li><span>PUBG: BATTLEGROUNDS</span> <span class="badge">285K Live</span></li>
-                <li><span>Apex Legends</span> <span class="badge">144K Live</span></li>
-            </ul>
+        <!-- ================= 🛒 LIFESTYLE HUB ================= -->
+        <div id="lifestyle-front" class="hub-grid" style="display: none;">
+            
+            <!-- Card 1: Local Profile Tracker -->
+            <div class="card">
+                <h2>📍 My Area & Profile Tracker</h2>
+                <ul class="data-list">
+                    <li>
+                        <span>Current Suburb:</span>
+                        <span class="badge" id="user-location" style="background: rgba(255,74,74,0.1); color: #ff4a4a;">Detecting Location...</span>
+                    </li>
+                    <li>
+                        <span>Shopping Taste:</span>
+                        <span class="badge" style="background: rgba(100,116,139,0.1); color: #94a3b8;">Essentials & Tech</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 2: Price Radar Comparisons -->
+            <div class="card">
+                <h2>🔍 Real-Time Price Radar</h2>
+                <ul class="data-list" id="price-radar-list">
+                    <li><span>Initializing price indexing matrices...</span></li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Smart Basket Aggregator -->
+            <div class="card">
+                <h2>💡 Smart Basket Optimizer</h2>
+                <ul class="data-list" id="basket-optimizer-list">
+                    <li><span>Awaiting item selection to calculate overall values...</span></li>
+                </ul>
+            </div>
+
         </div>
 
-        <!-- South African Server Ping Status -->
-        <div class="card">
-            <h2>🇿🇦 SA Server Status (ZA Regions)</h2>
-            <ul class="data-list">
-                <li><span>Valorant (JHB)</span> <span class="badge active">● Operational (14ms)</span></li>
-                <li><span>Dota 2 (CPT)</span> <span class="badge active">● Operational (8ms)</span></li>
-                <li><span>Apex Legends (JHB)</span> <span class="badge active">● Operational (19ms)</span></li>
-                <li><span>Call of Duty (ZA)</span> <span class="badge active">● Operational (12ms)</span></li>
-            </ul>
-        </div>
-
-        <!-- Epic Game Deals -->
-        <div class="card">
-            <h2><!-- 🔥 Epic Gaming Deals Card -->
-<div class="card">
-    <h2>🔥 Epic Gaming Deals & Freebies</h2>
-    <ul class="data-list" id="epic-deals-list">
-        <!-- Live data will be injected here automatically -->
-        <li><span>Loading live data streams...</span></li>
-    </ul>
-</div>
-
-    </div>
+    </main>
 
     <footer>
         <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
     </footer>
-<script>
-    // This function automatically calls a free gaming deals API when someone loads pudge.co.za
-    async function fetchLiveDeals() {
-        try {
-            // Fetch top 3 active PC game deals from CheapShark's open API
-            const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
-            const deals = await response.json();
-            
-            // Find the list element in your HTML template
-            const dealsContainer = document.querySelector('#epic-deals-list');
-            if (!dealsContainer) return;
 
-            // Clear out the hardcoded placeholder text
-            dealsContainer.innerHTML = '';
-
-            // Dynamically loop through the live API data and inject it into your page
-            deals.forEach(deal => {
-                const li = document.createElement('li');
-                // Calculate the savings percentage
-                const savings = Math.round(parseFloat(deal.savings));
-                
-                li.innerHTML = `
-                    <span>${deal.title}</span> 
-                    <span class="badge" style="color: #ffd700;">$${deal.salePrice} (${savings}% OFF)</span>
-                `;
-                dealsContainer.appendChild(li);
-            });
-        } catch (error) {
-            console.error('Error fetching live gaming deals:', error);
-        }
-    }
-
-    // Fire off the automation as soon as the page loads!
-    window.onload = fetchLiveDeals;
-</script>
-<script>
-    // Automates fetching real-time PC gaming deals
-    async function loadLiveDeals() {
-        try {
-            // Pulls top 3 active global game deals
-            const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
-            const data = await response.json();
-            
-            const listContainer = document.getElementById('epic-deals-list');
-            if (!listContainer) return;
-
-            // Clear the static placeholders
-            listContainer.innerHTML = '';
-
-            // Map over the real-time API array and construct clean list structures
-            data.forEach(deal => {
-                const row = document.createElement('li');
-                const discount = Math.round(parseFloat(deal.savings));
-                
-                row.innerHTML = `
-                    <span>${deal.title}</span>
-                    <span class="badge" style="background: rgba(255, 215, 0, 0.1); color: #ffd700;">
-                        $${deal.salePrice} (${discount}% OFF)
-                    </span>
-                `;
-                listContainer.appendChild(row);
-            });
-        } catch (err) {
-            console.error('Data pipeline exception:', err);
-        }
-    }
-
-    // Trigger the automated pipeline the exact microsecond the document finishes rendering
-    window.addEventListener('DOMContentLoaded', loadLiveDeals);
-</script> 
-<script>
-    // 1. Automates fetching real-time PC gaming deals
-    async function loadLiveDeals() {
-        try {
-            const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
-            const data = await response.json();
-            const listContainer = document.getElementById('epic-deals-list');
-            if (!listContainer) return;
-
-            listContainer.innerHTML = '';
-            data.forEach(deal => {
-                const row = document.createElement('li');
-                const discount = Math.round(parseFloat(deal.savings));
-                row.innerHTML = `
-                    <span>${deal.title}</span>
-                    <span class="badge" style="background: rgba(255, 215, 0, 0.1); color: #ffd700;">$${deal.salePrice} (${discount}% OFF)</span>
-                `;
-                listContainer.appendChild(row);
-            });
-        } catch (err) {
-            console.error('Deals pipeline error:', err);
-        }
-    }
-
-    // 2. Simulates real-time live-ticker fluctuations for global active players
-    function simulateLivePlayers() {
-        const playerBadges = document.querySelectorAll('.card:nth-of-type(2) .badge');
-        playerBadges.forEach(badge => {
-            // Pull the current text value (e.g., "842K Live"), strip non-digits
-            const currentCount = parseFloat(badge.innerText);
-            if (isNaN(currentCount)) return;
-            
-            // Fluctuates the active players slightly up or down by a small fraction
-            const variance = (Math.random() * 4 - 2); // -2K to +2K swing
-            const newCount = Math.max(10, currentCount + variance).toFixed(1);
-            
-            badge.innerText = `${newCount}K Live`;
-        });
-    }
-
-    // 3. Simple high-accuracy client latency check to approximate localized pings
-    async function calculateLivePings() {
-        const pingStatusElements = document.querySelectorAll('.card:nth-of-type(3) .badge');
-        
-        // Target localized infrastructure assets or CDN edge endpoints
-        const targetEndpoint = 'https://1.1.1.1/cdn-cgi/trace'; 
-
-        for (let element of pingStatusElements) {
-            const startTime = performance.now();
+    <script>
+        // 1. Fetches real-time PC gaming deals from CheapShark's open API
+        async function loadLiveDeals() {
             try {
-                // Fetch a tiny packet to measure round-trip time directly on the edge network
-                await fetch(targetEndpoint, { mode: 'no-cors', cache: 'no-store' });
-                const endTime = performance.now();
-                let rtt = Math.round(endTime - startTime);
-                
-                // Adjust to show localized regional routing variations
-                if (element.parentNode.innerText.includes('JHB')) rtt = Math.max(12, rtt - 5);
-                if (element.parentNode.innerText.includes('CPT')) rtt = Math.max(8, rtt - 9);
-                
-                element.innerHTML = `● Operational (${rtt}ms)`;
-            } catch (e) {
-                element.innerHTML = `<span style="color: #ff4a4a;">● Intermittent</span>`;
+                const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
+                const data = await response.json();
+                const listContainer = document.getElementById('epic-deals-list');
+                if (!listContainer) return;
+
+                listContainer.innerHTML = '';
+                data.forEach(deal => {
+                    const row = document.createElement('li');
+                    const discount = Math.round(parseFloat(deal.savings));
+                    row.innerHTML = `
+                        <span>${deal.title}</span>
+                        <span class="badge" style="background: rgba(255, 215, 0, 0.1); color: #ffd700;">$${deal.salePrice} (${discount}% OFF)</span>
+                    `;
+                    listContainer.appendChild(row);
+                });
+            } catch (err) {
+                console.error('Deals pipeline error:', err);
             }
         }
-    }
 
-    // Initial load setup when the browser finishes compiling the page layout
-    window.addEventListener('DOMContentLoaded', () => {
-        loadLiveDeals();
-        calculateLivePings();
-        
-        // Keep the dashboard actively ticking player counters every 4 seconds!
-        setInterval(simulateLivePlayers, 4000);
-    });
-</script> 
-        <script>
-    // 1. Fetches real-time PC gaming deals
-    async function loadLiveDeals() {
-        try {
-            const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
-            const data = await response.json();
-            const listContainer = document.getElementById('epic-deals-list');
-            if (!listContainer) return;
-
-            listContainer.innerHTML = '';
-            data.forEach(deal => {
-                const row = document.createElement('li');
-                const discount = Math.round(parseFloat(deal.savings));
-                row.innerHTML = `
-                    <span>${deal.title}</span>
-                    <span class="badge" style="background: rgba(255, 215, 0, 0.1); color: #ffd700;">$${deal.salePrice} (${discount}% OFF)</span>
-                `;
-                listContainer.appendChild(row);
+        // 2. Simulates real-time live-ticker fluctuations for player counts
+        function simulateLivePlayers() {
+            const badges = document.querySelectorAll('#gaming-front .card:nth-of-type(2) .badge');
+            badges.forEach(badge => {
+                const currentCount = parseFloat(badge.innerText);
+                if (isNaN(currentCount)) return;
+                
+                const swing = (Math.random() * 3 - 1.5); 
+                const newCount = Math.max(10, currentCount + swing).toFixed(1);
+                
+                badge.innerText = `${newCount}K Live`;
             });
-        } catch (err) {
-            console.error('Deals pipeline error:', err);
         }
-    }
 
-    // 2. Simulates microscopic live-ticker fluctuations for player counts
-    function simulateLivePlayers() {
-        // Targets the badges in your Trending Games card
-        const badges = document.querySelectorAll('.card:nth-of-type(2) .badge');
-        badges.forEach(badge => {
-            const currentCount = parseFloat(badge.innerText);
-            if (isNaN(currentCount)) return;
-            
-            // Creates a slight realistic swing (-1.5K to +1.5K)
-            const swing = (Math.random() * 3 - 1.5); 
-            const newCount = Math.max(10, currentCount + swing).toFixed(1);
-            
-            badge.innerText = `${newCount}K Live`;
-        });
-    }
+        // 3. Measures network latency directly to Cloudflare edge nodes
+        async function calculateLivePings() {
+            const pingBadges = document.querySelectorAll('#gaming-front .card:nth-of-type(3) .badge');
+            const testNode = 'https://1.1.1.1/cdn-cgi/trace';
 
-    // 3. Measures actual network latency to the Cloudflare South African edge nodes
-    async function calculateLivePings() {
-        const pingBadges = document.querySelectorAll('.card:nth-of-type(3) .badge');
-        const testNode = 'https://1.1.1.1/cdn-cgi/trace'; // Hits closest edge router (JHB/CPT)
-
-        for (let badge of pingBadges) {
-            const start = performance.now();
-            try {
-                await fetch(testNode, { mode: 'no-cors', cache: 'no-store' });
-                const end = performance.now();
-                let latency = Math.round(end - start);
-                
-                // Add minor variances based on regional routing structures
-                if (badge.parentNode.innerText.includes('JHB')) latency = Math.max(12, latency - 4);
-                if (badge.parentNode.innerText.includes('CPT')) latency = Math.max(8, latency - 8);
-                
-                badge.innerHTML = `● Operational (${latency}ms)`;
-            } catch (e) {
-                badge.innerHTML = `<span style="color: #ff4a4a;">● Intermittent</span>`;
+            for (let badge of pingBadges) {
+                const start = performance.now();
+                try {
+                    await fetch(testNode, { mode: 'no-cors', cache: 'no-store' });
+                    const end = performance.now();
+                    let latency = Math.round(end - start);
+                    
+                    if (badge.parentNode.innerText.includes('JHB')) latency = Math.max(12, latency - 4);
+                    if (badge.parentNode.innerText.includes('CPT')) latency = Math.max(8, latency - 8);
+                    
+                    badge.innerHTML = `● Operational (${latency}ms)`;
+                } catch (e) {
+                    badge.innerHTML = `<span style="color: #ff4a4a;">● Intermittent</span>`;
+                }
             }
         }
-    }
 
-    // Initialize all automation systems simultaneously on document load
-    window.addEventListener('DOMContentLoaded', () => {
-        loadLiveDeals();
-        calculateLivePings();
-        
-        // Keep the active player ticker fluctuating every 5 seconds
-        setInterval(simulateLivePlayers, 5000);
-    });
-            // Switches the app views cleanly between Gaming and Lifestyle frontends
-function switchHub(selectedMode) {
-    const gamingHub = document.getElementById('gaming-front');
-    const lifestyleHub = document.getElementById('lifestyle-front');
-    const gamingBtn = document.getElementById('btn-gaming');
-    const lifestyleBtn = document.getElementById('btn-lifestyle');
+        // 4. Switches views dynamically between Gaming and Lifestyle frontends
+        function switchHub(selectedMode) {
+            const gamingHub = document.getElementById('gaming-front');
+            const lifestyleHub = document.getElementById('lifestyle-front');
+            const gamingBtn = document.getElementById('btn-gaming');
+            const lifestyleBtn = document.getElementById('btn-lifestyle');
 
-    if (selectedMode === 'gaming') {
-        gamingHub.style.display = 'grid';
-        lifestyleHub.style.display = 'none';
-        gamingBtn.classList.add('active');
-        lifestyleBtn.classList.remove('active');
-    } else {
-        gamingHub.style.display = 'none';
-        lifestyleHub.style.display = 'grid';
-        gamingBtn.classList.remove('active');
-        lifestyleBtn.classList.add('active');
-    }
-}
-</script>
+            if (selectedMode === 'gaming') {
+                gamingHub.style.display = 'grid';
+                lifestyleHub.style.display = 'none';
+                gamingBtn.classList.add('active');
+                lifestyleBtn.classList.remove('active');
+            } else {
+                gamingHub.style.display = 'none';
+                lifestyleHub.style.display = 'grid';
+                gamingBtn.classList.remove('active');
+                lifestyleBtn.classList.add('active');
+            }
+        }
+
+        // Fire off everything safely once elements render
+        window.addEventListener('DOMContentLoaded', () => {
+            loadLiveDeals();
+            calculateLivePings();
+            setInterval(simulateLivePlayers, 5000);
+        });
+    </script>
 </body>
 </html>
