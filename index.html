@@ -167,8 +167,89 @@
 <body>
 
     <header>
-        <h1>PUDGE.CO.ZA</h1>
-        <p>Automated Multi-Game Analytics & Global Dashboard</p>
+               <!-- Main Header -->
+<header style="text-align: center; margin-top: 40px;">
+    <h1 style="color: #ff4a4a; font-size: 2.5rem; letter-spacing: 2px; margin-bottom: 5px;">PUDGE.CO.ZA</h1>
+    <p style="color: #64748b; font-size: 1rem;">Automated AI Companion & Global Dashboard</p>
+
+    <!-- 🎛️ The Hub Switcher Component -->
+    <div class="switcher-container">
+        <button id="btn-gaming" class="switch-btn active" onclick="switchHub('gaming')">🎮 Gaming Mode</button>
+        <button id="btn-lifestyle" class="switch-btn" onclick="switchHub('lifestyle')">🛒 Lifestyle Mode</button>
+    </div>
+</header>
+
+<!-- Main Container -->
+<main style="padding: 0 20px; margin-bottom: 60px;">
+
+    <!-- ================= 🎮 GAMING HUb ================= -->
+    <div id="gaming-front" class="hub-grid">
+        
+        <!-- Card 1: AI Updates -->
+        <div class="card">
+            <h2>🤖 AI Game Updates (tl;dr)</h2>
+            <!-- Keep your existing content inside here -->
+        </div>
+
+        <!-- Card 2: Trending Games -->
+        <div class="card">
+            <h2>📊 Trending Games (Global)</h2>
+            <!-- Keep your existing content inside here -->
+        </div>
+
+        <!-- Card 3: SA Server Status (Typo Fixed! 🇿🇦) -->
+        <div class="card">
+            <h2>🇿🇦 SA Server Status (ZA Regions)</h2>
+            <!-- Keep your existing content inside here -->
+        </div>
+
+        <!-- Card 4: Epic Deals -->
+        <div class="card">
+            <h2>🔥 Epic Gaming Deals & Freebies</h2>
+            <ul class="data-list" id="epic-deals-list">
+                <li><span>Loading live data streams...</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- ================= 🛒 LIFESTYLE HUB ================= -->
+    <div id="lifestyle-front" class="hub-grid" style="display: none;">
+        
+        <!-- Card 1: Local Profile Tracker -->
+        <div class="card">
+            <h2>📍 My Area & Profile Tracker</h2>
+            <ul class="data-list">
+                <li>
+                    <span>Current Suburb:</span>
+                    <span class="badge" id="user-location" style="background: rgba(255,74,74,0.1); color: #ff4a4a;">Detecting Location...</span>
+                </li>
+                <li>
+                    <span>Shopping Taste:</span>
+                    <span class="badge" style="background: rgba(100,116,139,0.1); color: #94a3b8;">Essentials & Tech</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Card 2: Price Radar Comparisons -->
+        <div class="card">
+            <h2>🔍 Real-Time Price Radar</h2>
+            <ul class="data-list" id="price-radar-list">
+                <li><span>Initializing price indexing matrices...</span></li>
+            </ul>
+        </div>
+
+        <!-- Card 3: Smart Basket Aggregator -->
+        <div class="card">
+            <h2>💡 Smart Basket Optimizer</h2>
+            <ul class="data-list" id="basket-optimizer-list">
+                <li><span>Awaiting item selection to calculate overall values...</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+</main>
     </header>
 
     <div class="container">
