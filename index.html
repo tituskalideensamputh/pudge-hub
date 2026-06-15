@@ -517,6 +517,25 @@
         // Keep the active player ticker fluctuating every 5 seconds
         setInterval(simulateLivePlayers, 5000);
     });
+            // Switches the app views cleanly between Gaming and Lifestyle frontends
+function switchHub(selectedMode) {
+    const gamingHub = document.getElementById('gaming-front');
+    const lifestyleHub = document.getElementById('lifestyle-front');
+    const gamingBtn = document.getElementById('btn-gaming');
+    const lifestyleBtn = document.getElementById('btn-lifestyle');
+
+    if (selectedMode === 'gaming') {
+        gamingHub.style.display = 'grid';
+        lifestyleHub.style.display = 'none';
+        gamingBtn.classList.add('active');
+        lifestyleBtn.classList.remove('active');
+    } else {
+        gamingHub.style.display = 'none';
+        lifestyleHub.style.display = 'grid';
+        gamingBtn.classList.remove('active');
+        lifestyleBtn.classList.add('active');
+    }
+}
 </script>
 </body>
 </html>
