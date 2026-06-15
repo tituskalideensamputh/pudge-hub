@@ -429,7 +429,7 @@
                     <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 15px;">Updated by Llama-3 AI 42 minutes ago</p>
                 </div>
                 <div class="search-container">
-                    <input type="text" id="game-search-input" class="search-input" placeholder="Enter target game name (e.g. dota, cs2, wuwa)..." onkeypress="handleSearchKeyPress(event)">
+                    <input type="text" id="game-search-input" class="search-input" placeholder="Type ANY game name (e.g. forza, cs2, elden ring)..." onkeypress="handleSearchKeyPress(event)">
                     <button class="search-btn" onclick="executeGameIntelligenceScan()">Scan</button>
                 </div>
             </div>
@@ -506,13 +506,11 @@
         let backgroundTickerLoop = null;
         let activeInterfaceView = "home";
 
-        // Global Static AppID ID Catalog matching user queries directly to clean developer endpoints
+        // Global Static Shortcuts (Fast-track indexing for aliases)
         const STEAM_MAPPING_MATRIX = {
             'dota': 570, 'dota 2': 570, 'counter-strike 2': 730, 'cs2': 730, 'csgo': 730,
             'pubg': 578080, 'apex': 1172470, 'apex legends': 1172470, 
-            'wuthering waves': 3513350, 'wuwa': 3513350, 
-            'elden ring': 1245620, 'helldivers 2': 553850, 'gta': 271590,
-            'cyberpunk': 1091500, 'witcher': 292030, 'cod': 1938090
+            'wuthering waves': 3513350, 'wuwa': 3513350
         };
 
         function changeHub(targetMode) {
@@ -613,7 +611,7 @@
             }
         }
 
-        // ================= 🎯 Bulletproof Steam Pipeline (CORS Clean) =================
+        // ================= 🎯 Unrestricted Dynamic Search & Pipeline =================
 
         function handleSearchKeyPress(event) {
             if (event.key === 'Enter') executeGameIntelligenceScan();
@@ -628,23 +626,51 @@
             const modalHeadline = document.getElementById('modal-headline');
             const contentArea = document.getElementById('modal-content-area');
 
-            modalHeadline.innerText = `🚨 SCANNING CORE FEED: ${rawQuery.toUpperCase()}`;
-            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Harvesting corporate news streams...</div>`;
+            modalHeadline.innerText = `🚨 SCANNING DATABASE: ${rawQuery.toUpperCase()}`;
+            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Resolving game identity vector...</div>`;
             modalOverlay.style.display = 'flex';
 
-            // Catch games not indexed in your matrix setup
-            if (!STEAM_MAPPING_MATRIX[rawQuery]) {
+            let appId = null;
+            let resolvedName = rawQuery;
+
+            // 1. Check local shortcuts first
+            if (STEAM_MAPPING_MATRIX[rawQuery]) {
+                appId = STEAM_MAPPING_MATRIX[rawQuery];
+            } else {
+                // 2. Dynamic catalog scan fallback for any unindexed game query
+                try {
+                    const searchUrl = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(rawQuery)}&l=english&cc=US`;
+                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`;
+                    
+                    const searchResponse = await fetch(proxyUrl);
+                    if (searchResponse.ok) {
+                        const searchWrap = await searchResponse.json();
+                        const searchPayload = JSON.parse(searchWrap.contents);
+                        
+                        if (searchPayload && searchPayload.items && searchPayload.items.length > 0) {
+                            appId = searchPayload.items[0].id;
+                            resolvedName = searchPayload.items[0].name;
+                            modalHeadline.innerText = `🚨 SCANNING CORE FEED: ${resolvedName.toUpperCase()}`;
+                            contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Index located. Loading update streams...</div>`;
+                        }
+                    }
+                } catch (searchError) {
+                    console.error("Dynamic catalog search fault:", searchError);
+                }
+            }
+
+            // Reject gracefully if the search returned absolute zero hits
+            if (!appId) {
                 contentArea.innerHTML = `
                     <div style="text-align: center; padding: 40px;">
                         <div style="font-size: 2.5rem; margin-bottom: 15px;">⚠️</div>
-                        <h4 style="margin: 0 0 10px 0; color: var(--accent);">Target Index Vector Omitted</h4>
-                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">"${rawQuery}" is not mapped in your current local index. Try running a scan on 'wuwa', 'cs2', or 'elden ring'.</p>
+                        <h4 style="margin: 0 0 10px 0; color: var(--accent);">Target Database Miss</h4>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">Could not auto-resolve "${rawQuery}" to an active database listing. Please verify the game name and try again.</p>
                     </div>`;
                 return;
             }
 
-            const appId = STEAM_MAPPING_MATRIX[rawQuery];
-
+            // 3. Request news streams via App ID
             try {
                 const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=15`)}`;
                 
@@ -674,7 +700,7 @@
                         <div style="text-align: center; padding: 40px;">
                             <div style="font-size: 2.5rem; margin-bottom: 15px;">📡</div>
                             <h4 style="margin: 0 0 10px 0; color: var(--accent);">No Recent Telemetry Logged</h4>
-                            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No active developer blogs or official patch cycles found for App ID: ${appId} over the last 60 days.</p>
+                            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No active developer blogs or official patch cycles found for <strong>${resolvedName}</strong> (App ID: ${appId}) over the last 60 days.</p>
                         </div>`;
                     return;
                 }
