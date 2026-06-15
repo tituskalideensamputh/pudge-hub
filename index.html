@@ -15,6 +15,9 @@
             --border-color: #1e293b;
             --status-green: #2ea44f;
             --glow: rgba(56, 189, 248, 0.15);
+            --accent-gold: #ffcc00;
+            --badge-steam: #171a21;
+            --badge-epic: #2a2a2a;
         }
 
         [data-theme="gaming"] {
@@ -26,6 +29,9 @@
             --border-color: #25293a;
             --status-green: #38bdf8;
             --glow: rgba(255, 74, 74, 0.25);
+            --accent-gold: #ffcc00;
+            --badge-steam: #171a21;
+            --badge-epic: #2a2a2a;
         }
 
         [data-theme="lifestyle"] {
@@ -232,9 +238,22 @@
             padding: 11px 0;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
 
         .data-list li:last-child { border-bottom: none; }
+
+        .game-meta-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .game-title-text {
+            color: var(--text-main);
+            font-weight: 600;
+        }
 
         .badge {
             background: rgba(255,255,255,0.04);
@@ -243,11 +262,73 @@
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 700;
+            white-space: nowrap;
         }
 
         .badge.active {
             color: var(--status-green);
             background: rgba(56, 189, 248, 0.05);
+        }
+
+        /* Store Badges */
+        .store-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: max-content;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .store-tag.steam {
+            background-color: var(--badge-steam);
+            color: #66c0f4;
+            border: 1px solid rgba(102, 192, 244, 0.2);
+        }
+
+        .store-tag.epic {
+            background-color: var(--badge-epic);
+            color: #f5f5f5;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Premium Gold Price Pill Layout */
+        .price-pill {
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+            background-color: rgba(255, 204, 0, 0.03);
+            text-decoration: none;
+        }
+
+        .price-pill:hover {
+            background-color: rgba(255, 204, 0, 0.1);
+        }
+
+        .price-pill.free-pilled {
+            border-color: #2ed573;
+            color: #2ed573;
+            background-color: rgba(46, 213, 115, 0.05);
+        }
+
+        .section-separator {
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 16px 0 8px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-separator.free-zone {
+            color: #2ed573;
         }
 
         .search-container {
@@ -321,6 +402,13 @@
             font-size: 0.75rem;
             color: var(--text-muted);
             font-weight: 600;
+        }
+
+        .loader-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 15px 0;
         }
 
         footer {
@@ -416,10 +504,20 @@
             </div>
 
             <div class="card">
-                <h2>🔥 Epic Gaming Deals & Freebies</h2>
-                <ul class="data-list" id="epic-deals-list">
-                    <li><span>Loading live data streams...</span></li>
-                </ul>
+                <h2>🔥 Epic Freebies & Top Deals (ZAR)</h2>
+                <div class="card-scroll-tray">
+                    
+                    <div class="section-separator free-zone">🎁 Epic Free Games</div>
+                    <ul class="data-list" id="epic-free-list">
+                        <div class="loader-text">Checking active free promotions...</div>
+                    </ul>
+
+                    <div class="section-separator">📈 Top 10 Combined Deals</div>
+                    <ul class="data-list" id="combined-deals-list">
+                        <div class="loader-text">Analyzing market prices...</div>
+                    </ul>
+
+                </div>
             </div>
         </div>
 
@@ -427,7 +525,7 @@
             <div class="card">
                 <h2>📍 My Area & Profile Tracker</h2>
                 <ul class="data-list">
-                    <li><span>Current Suburb:</span> <span class="badge" id="user-location" style="background: rgba(16,185,129,0.1); color: #10b981;">Detecting Location...</span></li>
+                    <li><span>Current Suburb:</span> <span class="badge" id="user-location" style="background: rgba(16,185,129,0.1); color: #10b981;">Phoenix, KZN</span></li>
                     <li><span>Shopping Taste:</span> <span class="badge" style="background: rgba(100,116,139,0.1); color: #94a3b8;">Essentials & Tech</span></li>
                 </ul>
             </div>
@@ -453,6 +551,9 @@
     <script>
         let backgroundTickerLoop = null;
         let activeInterfaceView = "home";
+
+        const STEAM_STORE_ID = "1";
+        const EPIC_STORE_ID = "25";
 
         // Pre-Mapped AppID Database Catalog
         const STEAM_MAPPING_MATRIX = {
@@ -499,7 +600,7 @@
                     lifestyleGridElement.style.display = 'none';
                     document.getElementById('nav-gaming').classList.add('active');
                     taglineElement.innerText = "Real-Time Telemetry & Systems Status Matrix";
-                    loadLiveDeals();
+                    updateGamingWidget();
                     if (!backgroundTickerLoop) {
                         backgroundTickerLoop = setInterval(simulateLiveDownloads, 4000);
                     }
@@ -514,26 +615,94 @@
             }
         }
 
-        async function loadLiveDeals() {
+        // Live Deals Processing Engine with Forex Conversion to ZAR
+        async function updateGamingWidget() {
             try {
-                const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
-                const data = await response.json();
-                const listContainer = document.getElementById('epic-deals-list');
-                if (!listContainer || activeInterfaceView !== 'gaming') return;
+                let zarExchangeRate = 18.25; // Default stable fallback
+                try {
+                    const forexResponse = await fetch("https://open.er-api.com/v6/latest/USD");
+                    const forexData = await forexResponse.json();
+                    if (forexData && forexData.rates && forexData.rates.ZAR) {
+                        zarExchangeRate = forexData.rates.ZAR;
+                    }
+                } catch (forexError) {
+                    console.warn("Forex downlink failed. Defaulting to base parameters.", forexError);
+                }
 
-                listContainer.innerHTML = '';
-                data.forEach(deal => {
-                    const row = document.createElement('li');
-                    const discount = Math.round(parseFloat(deal.savings));
-                    row.innerHTML = `
-                        <span>${deal.title}</span>
-                        <span class="badge" style="background: rgba(255, 215, 0, 0.05); color: #ffd700; border-color: rgba(255,215,0,0.15);">$${deal.salePrice} (${discount}% OFF)</span>
-                    `;
-                    listContainer.appendChild(row);
-                });
-            } catch (err) {
-                console.error('Deals pipeline link failure:', err);
+                // Fetch Epic Free Games (items with a maximum price threshold of 0.00)
+                const freeResponse = await fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=${EPIC_STORE_ID}&upperPrice=0`);
+                const freeGames = await freeResponse.json();
+
+                // Fetch Top Daily Market Deals for Steam and Epic Games Store
+                const dealsResponse = await fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=${STEAM_STORE_ID},${EPIC_STORE_ID}&pageSize=30`);
+                let aggregatedDeals = await dealsResponse.json();
+
+                // Deduplicate deals that are currently featured in the free listing row
+                const activeFreeTitles = new Set(freeGames.map(g => g.title.toLowerCase()));
+                aggregatedDeals = aggregatedDeals
+                    .filter(deal => !activeFreeTitles.has(deal.title.toLowerCase()) && parseFloat(deal.salePrice) > 0)
+                    .slice(0, 10);
+
+                renderFreeGamesSection(freeGames);
+                renderCombinedDealsSection(aggregatedDeals, zarExchangeRate);
+
+            } catch (error) {
+                console.error("Critical error inside deals data-stream:", error);
+                document.getElementById('epic-free-list').innerHTML = `<div class="loader-text">Unable to process free records.</div>`;
+                document.getElementById('combined-deals-list').innerHTML = `<div class="loader-text">Unable to compile combined indices.</div>`;
             }
+        }
+
+        function renderFreeGamesSection(gamesList) {
+            const container = document.getElementById('epic-free-list');
+            if (!gamesList || gamesList.length === 0) {
+                container.innerHTML = `
+                    <li>
+                        <div class="game-meta-wrapper">
+                            <span class="game-title-text" style="color: var(--text-muted); font-weight: normal;">No current 100% off promotions active.</span>
+                        </div>
+                    </li>`;
+                return;
+            }
+
+            container.innerHTML = gamesList.map(game => `
+                <li>
+                    <div class="game-meta-wrapper">
+                        <span class="game-title-text">${game.title}</span>
+                        <span class="store-tag epic">Epic Games</span>
+                    </div>
+                    <a href="https://www.cheapshark.com/redirect?dealID=${game.dealID}" target="_blank" class="price-pill free-pilled">FREE (100% OFF)</a>
+                </li>
+            `).join('');
+        }
+
+        function renderCombinedDealsSection(dealsList, exchangeRate) {
+            const container = document.getElementById('combined-deals-list');
+            if (!dealsList || dealsList.length === 0) {
+                container.innerHTML = `<div class="loader-text">No active entries filtered for today.</div>`;
+                return;
+            }
+
+            container.innerHTML = dealsList.map(deal => {
+                const storeClass = deal.storeID === STEAM_STORE_ID ? 'steam' : 'epic';
+                const storeLabel = deal.storeID === STEAM_STORE_ID ? 'Steam' : 'Epic Games';
+                const markdownDiscount = Math.round(parseFloat(deal.savings));
+                
+                // Perform conversion calculation to South African Rands
+                const computedZarPrice = (parseFloat(deal.salePrice) * exchangeRate).toFixed(2);
+                
+                return `
+                    <li>
+                        <div class="game-meta-wrapper">
+                            <span class="game-title-text">${deal.title}</span>
+                            <span class="store-tag ${storeClass}">${storeLabel}</span>
+                        </div>
+                        <a href="https://www.cheapshark.com/redirect?dealID=${deal.dealID}" target="_blank" class="price-pill">
+                            R ${computedZarPrice} (-${markdownDiscount}%)
+                        </a>
+                    </li>
+                `;
+            }).join('');
         }
 
         function simulateLiveDownloads() {
@@ -547,7 +716,7 @@
             });
         }
 
-        // ================= 🎯 Unified Search Engine =================
+        // ================= 🎯 UNRESTRICTED SEARCH MATRIX ENGINE =================
 
         function handleSearchKeyPress(event) {
             if (event.key === 'Enter') executeGameIntelligenceScan();
@@ -567,11 +736,11 @@
             let appId = null;
             let resolvedName = rawQuery;
 
-            // 1. Check local catalog
+            // 1. Direct local lookup checks
             if (STEAM_MAPPING_MATRIX[rawQuery]) {
                 appId = STEAM_MAPPING_MATRIX[rawQuery];
             } else {
-                // 2. Automated network store lookups
+                // 2. Fallback automated store network lookup
                 try {
                     const searchUrl = `https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(rawQuery)}&l=english&cc=US`;
                     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`;
@@ -603,7 +772,7 @@
 
             headlineElement.innerText = `🤖 Logs: ${resolvedName.toUpperCase()}`;
 
-            // 3. Request actual news arrays
+            // 3. Request actual news arrays (Unrestricted Timeline Protocol)
             try {
                 const steamEndpoint = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=${appId}&count=15`)}`;
                 
