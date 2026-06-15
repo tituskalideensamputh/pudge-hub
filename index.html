@@ -393,10 +393,12 @@
 </head>
 <body data-theme="home">
 
+    <!-- Primary Structural Header Wrapper -->
     <header>
         <h1 onclick="changeHub('home')">PUDGE.CO.ZA</h1>
         <p id="site-tagline">Automated AI Companion & Global Dashboard</p>
 
+        <!-- Dynamic Control Engine -->
         <div id="navigation-controls" class="nav-container" style="display: none;">
             <button id="nav-home" class="nav-btn" onclick="changeHub('home')">🏠 Home Portal</button>
             <button id="nav-gaming" class="nav-btn" onclick="changeHub('gaming')">🎮 Gaming Grid</button>
@@ -404,8 +406,10 @@
         </div>
     </header>
 
+    <!-- Main Workspace -->
     <main style="margin-bottom: 40px; flex-grow: 1; display: flex; align-items: center; width: 100%;">
 
+        <!-- 🚪 ZONE 1: MINIMALIST GATEWAY VIEW -->
         <div id="gateway-view" class="gateway-container">
             
             <div class="portal-card gaming-gate" onclick="changeHub('gaming')">
@@ -423,8 +427,10 @@
         </div>
 
 
+        <!-- 🎮 ZONE 2: ACTIVE GAMING HUB -->
         <div id="gaming-front" class="hub-grid" style="display: none;">
             
+            <!-- Card 1: AI Updates & Integrated Search Matrix -->
             <div class="card">
                 <div>
                     <h2>🤖 AI Game Updates (tl;dr)</h2>
@@ -434,12 +440,14 @@
                     <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 15px;">Updated by Llama-3 AI 42 minutes ago</p>
                 </div>
                 
+                <!-- Expanded Game Search Architecture -->
                 <div class="search-container">
                     <input type="text" id="game-search-input" class="search-input" placeholder="Query target game intelligence..." onkeypress="handleSearchKeyPress(event)">
                     <button class="search-btn" onclick="executeGameIntelligenceScan()">Scan</button>
                 </div>
             </div>
 
+            <!-- Card 2: Trending Games -->
             <div class="card">
                 <h2>📊 Trending Games (Global)</h2>
                 <ul class="data-list">
@@ -450,6 +458,7 @@
                 </ul>
             </div>
 
+            <!-- Card 3: SA Server Status -->
             <div class="card">
                 <h2>🇿🇦 SA Server Status (ZA Regions)</h2>
                 <ul class="data-list">
@@ -460,6 +469,7 @@
                 </ul>
             </div>
 
+            <!-- Card 4: Epic Deals -->
             <div class="card">
                 <h2>🔥 Epic Gaming Deals & Freebies</h2>
                 <ul class="data-list" id="epic-deals-list">
@@ -470,8 +480,10 @@
         </div>
 
 
+        <!-- 🛒 ZONE 3: ACTIVE LIFESTYLE HUB -->
         <div id="lifestyle-front" class="hub-grid" style="display: none;">
             
+            <!-- Card 1: Local Profile Tracker -->
             <div class="card">
                 <h2>📍 My Area & Profile Tracker</h2>
                 <ul class="data-list">
@@ -486,6 +498,7 @@
                 </ul>
             </div>
 
+            <!-- Card 2: Price Radar Comparisons -->
             <div class="card">
                 <h2>🔍 Real-Time Price Radar</h2>
                 <ul class="data-list" id="price-radar-list">
@@ -493,6 +506,7 @@
                 </ul>
             </div>
 
+            <!-- Card 3: Smart Basket Aggregator -->
             <div class="card">
                 <h2>💡 Smart Basket Optimizer</h2>
                 <ul class="data-list" id="basket-optimizer-list">
@@ -504,6 +518,7 @@
 
     </main>
 
+    <!-- 👁️ THEME-DRIVEN TACTICAL OVERLAY MODAL -->
     <div id="intel-modal" class="modal-overlay" onclick="closeIntelModalOutside(event)">
         <div class="modal-box">
             <div class="modal-header">
@@ -511,7 +526,8 @@
                 <button class="modal-close" onclick="closeIntelModal()">&times;</button>
             </div>
             <div id="modal-content-area" class="modal-body">
-                </div>
+                <!-- Dynamic Nodes Inject Here -->
+            </div>
         </div>
     </div>
 
@@ -519,15 +535,13 @@
         <p>&copy; 2026 Pudge.co.za. Powered by Cloudflare Serverless Edges & Free-Tier AI.</p>
     </footer>
 
+    <!-- ================= ⚡ CORE ARCHITECTURE DATA CONTROLLERS ================= -->
     <script>
-        // Global system execution hooks
         let backgroundTickerLoop = null;
         let activeInterfaceView = "home";
 
-        // 1. Unified Interface Router & Morphing Engine
         function changeHub(targetMode) {
             activeInterfaceView = targetMode;
-            
             const bodyNode = document.body;
             const gatewayElement = document.getElementById('gateway-view');
             const gamingGridElement = document.getElementById('gaming-front');
@@ -535,11 +549,8 @@
             const navBarElement = document.getElementById('navigation-controls');
             const taglineElement = document.getElementById('site-tagline');
 
-            // Reset Sub-Navigation Buttons Active Indicators
             document.getElementById('nav-gaming').classList.remove('active');
             document.getElementById('nav-lifestyle').classList.remove('active');
-
-            // Update Dynamic Context Styles via Attributes
             bodyNode.setAttribute('data-theme', targetMode);
 
             if (targetMode === 'home') {
@@ -548,7 +559,6 @@
                 lifestyleGridElement.style.display = 'none';
                 navBarElement.style.display = 'none';
                 taglineElement.innerText = "Automated AI Companion & Global Dashboard";
-                
                 clearInterval(backgroundTickerLoop);
                 backgroundTickerLoop = null;
             } else {
@@ -571,14 +581,12 @@
                     lifestyleGridElement.style.display = 'grid';
                     document.getElementById('nav-lifestyle').classList.add('active');
                     taglineElement.innerText = "Hyper-Local Resource Indexing Tools";
-                    
                     clearInterval(backgroundTickerLoop);
                     backgroundTickerLoop = null;
                 }
             }
         }
 
-        // 2. CheapShark Live External Consumer Pipeline
         async function loadLiveDeals() {
             try {
                 const response = await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=3');
@@ -601,21 +609,18 @@
             }
         }
 
-        // 3. Simulated Live Player Stream Engine
         function simulateLivePlayers() {
             if (activeInterfaceView !== 'gaming') return;
             const badges = document.querySelectorAll('#gaming-front .card:nth-of-type(2) .badge');
             badges.forEach(badge => {
                 const currentCount = parseFloat(badge.innerText);
                 if (isNaN(currentCount)) return;
-                
                 const swing = (Math.random() * 3 - 1.5); 
                 const newCount = Math.max(10, currentCount + swing).toFixed(1);
                 badge.innerText = `${newCount}K Live`;
             });
         }
 
-        // 4. Edge Latency Diagnostics Tool
         async function calculateLivePings() {
             if (activeInterfaceView !== 'gaming') return;
             const pingBadges = document.querySelectorAll('#gaming-front .card:nth-of-type(3) .badge');
@@ -627,10 +632,8 @@
                     await fetch(testNode, { mode: 'no-cors', cache: 'no-store' });
                     const end = performance.now();
                     let latency = Math.round(end - start);
-                    
                     if (badge.parentNode.innerText.includes('JHB')) latency = Math.max(12, latency - 4);
                     if (badge.parentNode.innerText.includes('CPT')) latency = Math.max(8, latency - 8);
-                    
                     badge.innerHTML = `● Operational (${latency}ms)`;
                 } catch (e) {
                     badge.innerHTML = `<span style="color: #ff4a4a;">● Intermittent</span>`;
@@ -638,9 +641,8 @@
             }
         }
 
-        // ================= 🤖 INTEGRATED LIVE GAME INTELLIGENCE SEARCH ENGINE =================
+        // ================= 🤖 live game intelligence scanner (cors unblocked) =================
 
-        // Helper to capture enter key presses on search bar
         function handleSearchKeyPress(event) {
             if (event.key === 'Enter') {
                 executeGameIntelligenceScan();
@@ -656,23 +658,28 @@
             const modalHeadline = document.getElementById('modal-headline');
             const contentArea = document.getElementById('modal-content-area');
 
-            // Set Loading Overlay State
             modalHeadline.innerText = `🚨 SCANNING NODES: ${rawQuery.toUpperCase()}`;
             contentArea.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted); font-weight: bold;">Synchronizing edge metrics & filtering 60-day datastreams...</div>`;
             modalOverlay.style.display = 'flex';
 
             try {
-                // Fetch curated gaming news vectors asynchronously using public JSON endpoints
-                const endpoint = `https://www.reddit.com/r/games/search.json?q=${encodeURIComponent(rawQuery)}&sort=new&restrict_sr=on&limit=40`;
-                const response = await fetch(endpoint);
-                const packet = await response.json();
+                // Core targeted telemetry endpoint
+                const targetUrl = `https://www.reddit.com/r/games/search.json?q=${encodeURIComponent(rawQuery)}&sort=new&restrict_sr=on&limit=40`;
+                
+                // Serverless CORS proxy wrapping layer to guarantee delivery past browser security blocks
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                
+                const response = await fetch(proxyUrl);
+                const proxyData = await response.json();
+                
+                // Parse the proxy's nested text string payload into functional JSON
+                const packet = JSON.parse(proxyData.contents);
                 const listings = packet.data.children;
 
-                // Time Tracking Logic (60 days bounds constraint)
                 const currentEpochSeconds = Math.floor(Date.now() / 1000);
                 const sixtyDaysSeconds = 60 * 24 * 60 * 60;
 
-                // Filter down to nodes exclusively within the past 2 months
+                // Enforce tight 60-day query bounds
                 const dynamicTimelineNodes = listings.filter(node => {
                     const age = currentEpochSeconds - node.data.created_utc;
                     return age <= sixtyDaysSeconds;
@@ -683,17 +690,14 @@
                         <div style="text-align: center; padding: 40px;">
                             <div style="font-size: 2.5rem; margin-bottom: 15px;">📡</div>
                             <h4 style="margin: 0 0 10px 0; color: var(--accent);">Zero Broadcasts Isolated</h4>
-                            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No validated update telemetry discovered for "${rawQuery}" on global channels over the past 2 months.</p>
+                            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">No validated update telemetry discovered for "${rawQuery}" over the past 2 months.</p>
                         </div>`;
                     return;
                 }
 
-                // Clear layout area and populate filtered updates
                 contentArea.innerHTML = '';
                 dynamicTimelineNodes.forEach(node => {
                     const data = node.data;
-                    
-                    // Convert UTC Epoch integer into structural date format
                     const formattedDate = new Date(data.created_utc * 1000).toLocaleDateString('en-ZA', {
                         day: 'numeric',
                         month: 'short',
